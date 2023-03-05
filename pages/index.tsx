@@ -1,8 +1,83 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
+import { useState, useCallback, ChangeEvent, Fragment } from 'react'
+import { MyTabs } from '../components/Tab'
+
+type MovieRecommendation = {
+  result: {
+    id: string;
+    object: string;
+    created: number;
+    model: string;
+    choices: {
+      message: {
+        role: string;
+        content: string;
+      };
+      finish_reason: string;
+      index: number;
+    }[];
+    usage: {
+      prompt_tokens: number;
+      completion_tokens: number;
+      total_tokens: number;
+    };
+  };
+};
 
 const Home: NextPage = () => {
+  const [value, setValue] = useState<string>('');
+  const [prompt, setPrompt] = useState<string>('');
+  const [completion, setCompletion] = useState<string | string[]>('');
+  const [completionLinks, setCompletionLinks] = useState<string | string[]>('');
+
+  function createMovieSearchLinks(movieTitles: string[]): string[] {
+    return movieTitles.map(title => `https://www6.f2movies.to/search/${title.replace(/\s+/g, '-')}`);
+  }
+  
+  function parseCompletion(completion: string): string[] {
+    const regex = /\d+\. (.+)/g;
+    const matches = completion.matchAll(regex);
+    const results: string[] = [];
+    for (const match of matches) {
+      results.push(match[1]);
+    }
+    return results;
+  }
+  
+  const handleInput = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      setValue(e.target.value);
+    }, []);
+  
+  const handleButtonClick = useCallback(
+    async () => {
+      setPrompt(value);
+      setCompletion('Loading...');
+      const response = await fetch('/api/openai', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text: value }),
+      });
+      const data: MovieRecommendation = await response.json();
+      setValue('');
+      const content = data.result.choices[0].message.content;
+      const movies = parseCompletion(content);
+      if (movies.length === 1) {
+        setCompletion(movies[0]);
+      } else {
+        setCompletion(movies);
+      }
+      if (movies.length === 1) {
+        setCompletion(movies[0]);
+      } else {
+        setCompletionLinks(createMovieSearchLinks(movies));
+      }
+    }, [value]);
+
   return (
     <div className="flex min-h-screen flex-col items-center justify-center py-2">
       <Head>
@@ -11,60 +86,33 @@ const Home: NextPage = () => {
       </Head>
 
       <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center">
-        <h1 className="text-6xl font-bold">
-          Welcome to{' '}
-          <a className="text-blue-600" href="https://nextjs.org">
-            Next.js!
-          </a>
-        </h1>
-
-        <p className="mt-3 text-2xl">
-          Get started by editing{' '}
-          <code className="rounded-md bg-gray-100 p-3 font-mono text-lg">
-            pages/index.tsx
-          </code>
+        <p className='pb-24 text-3xl font-black'>
+          Movie Night
         </p>
-
-        <div className="mt-6 flex max-w-4xl flex-wrap items-center justify-around sm:w-full">
-          <a
-            href="https://nextjs.org/docs"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Documentation &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Find in-depth information about Next.js features and its API.
-            </p>
-          </a>
-
-          <a
-            href="https://nextjs.org/learn"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Learn &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Learn about Next.js in an interactive course with quizzes!
-            </p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Examples &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Discover and deploy boilerplate example Next.js projects.
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Deploy &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+        <MyTabs/>
+        <div className="flex flex-col items-center justify-center gap-6 p-8">
+          <input className="w-full max-w-md px-4 py-3 bg-gray-100 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" type="text" value={value} onChange={handleInput} />
+          <button className="px-6 py-3 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50" onClick={handleButtonClick}>Submit</button>
+          <p className="text-center text-lg font-bold">{prompt}</p>
+          <ul className="list-disc pl-4">
+            {Array.isArray(completion) ? (
+              <ul className="list-decimal pl-8 mt-4">
+                {completion.map((movie, index) => (
+                  <li key={index} className="flex items-center mb-2">
+                    <span className="text-2xl font-bold">{index + 1}.</span>
+                    <span className="ml-4 text-lg font-semibold">{movie}</span>
+                    {completionLinks[index] && (
+                      <button className="ml-4 px-4 py-2 rounded-md bg-blue-500 text-white font-semibold hover:bg-blue-600" onClick={() => window.open(completionLinks[index], '_blank')}>
+                        Watch
+                      </button>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-center text-2xl">{completion}</p>
+            )}
+          </ul>
         </div>
       </main>
 
@@ -75,8 +123,7 @@ const Home: NextPage = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Powered by{' '}
-          <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
+          <p className='text-3xl font-black'>Hey Dawg hey whats up.</p>
         </a>
       </footer>
     </div>
