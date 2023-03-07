@@ -1,8 +1,7 @@
-import type { NextPage } from 'next'
 import Head from 'next/head'
-import Image from 'next/image'
-import { useState, useCallback, ChangeEvent, Fragment } from 'react'
-import { MyTabs } from '../components/Tab'
+import { useState, useCallback, ChangeEvent } from 'react'
+import Row from '../components/Row';
+import requests from '../utils/requests';
 
 type MovieRecommendation = {
   result: {
@@ -26,7 +25,59 @@ type MovieRecommendation = {
   };
 };
 
-const Home: NextPage = () => {
+export interface Genre {
+  id: number
+  name: string
+}
+
+export interface Movie {
+  title: string
+  backdrop_path: string
+  media_type?: string
+  release_date?: string
+  first_air_date: string
+  genre_ids: number[]
+  id: number
+  name: string
+  origin_country: string[]
+  original_language: string
+  original_name: string
+  overview: string
+  popularity: number
+  poster_path: string
+  vote_average: number
+  vote_count: number
+}
+
+export interface Element {
+type:
+  | 'Bloopers'
+  | 'Featurette'
+  | 'Behind the Scenes'
+  | 'Clip'
+  | 'Trailer'
+  | 'Teaser'
+}
+
+interface Props {
+  trendingNow: Movie[]
+  topRated: Movie[]
+  actionMovies: Movie[]
+  comedyMovies: Movie[]
+  horrorMovies: Movie[]
+  romanceMovies: Movie[]
+  documentaries: Movie[]
+}
+
+const Home = ({    
+  actionMovies,
+  comedyMovies,
+  documentaries,
+  horrorMovies,
+  romanceMovies,
+  topRated,
+  trendingNow,
+  }:Props ) => {
   const [value, setValue] = useState<string>('');
   const [prompt, setPrompt] = useState<string>('');
   const [completion, setCompletion] = useState<string | string[]>('');
@@ -35,7 +86,7 @@ const Home: NextPage = () => {
   function createMovieSearchLinks(movieTitles: string[]): string[] {
     return movieTitles.map(title => `https://www6.f2movies.to/search/${title.replace(/\s+/g, '-')}`);
   }
-  
+
   function parseCompletion(completion: string): string[] {
     const regex = /\d+\. (.+)/g;
     const matches = completion.matchAll(regex);
@@ -77,25 +128,32 @@ const Home: NextPage = () => {
         setCompletionLinks(createMovieSearchLinks(movies));
       }
     }, [value]);
-
+  
+  const handleKeyPress = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === 'Enter') {
+        handleButtonClick();
+      }
+    }, [handleButtonClick]);
+  
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center py-2">
+    <div className="relative h-screen flex-col items-center justify-center py-2">
       <Head>
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center">
-        <p className='pb-24 text-3xl font-black'>
-          Movie Night
+  
+      <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center pt-12">
+        <p className="px-6 font-extrabold text-transparent text-4xl md:text-6xl xl:text-8xl bg-clip-text bg-gradient-to-r from-sky-400 via-blue-600 to-purple-600 hidden md:flex pb-16">Movie Night</p>
+        <p className='pb-16 text-3xl font-black'>
+          What are you looking for?
         </p>
-        <MyTabs/>
         <div className="flex flex-col items-center justify-center gap-6 p-8">
-          <input className="w-full max-w-md px-4 py-3 bg-gray-100 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" type="text" value={value} onChange={handleInput} />
+          <input className="w-full max-w-md px-4 py-3 bg-gray-100 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent !text-black" type="text" value={value} onChange={handleInput} onKeyPress={handleKeyPress} />
           <button className="px-6 py-3 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50" onClick={handleButtonClick}>Submit</button>
           <p className="text-center text-lg font-bold">{prompt}</p>
           <ul className="list-disc pl-4">
-            {Array.isArray(completion) ? (
+            {Array.isArray(completion) && (completion.length === 5)  ? (
               <ul className="list-decimal pl-8 mt-4">
                 {completion.map((movie, index) => (
                   <li key={index} className="flex items-center mb-2">
@@ -110,10 +168,22 @@ const Home: NextPage = () => {
                 ))}
               </ul>
             ) : (
-              <p className="text-center text-2xl">{completion}</p>
+              <p className="text-center text-2xl">Innapropriate Conduct</p>
             )}
           </ul>
         </div>
+      </main>
+
+      <main className='relative pl-4 pb-24 lg:space-y-24 lg:pl-16 '>
+        <section className='md:space-y-24'>
+          <Row title="Trending Now" movies={trendingNow} />
+          <Row title="Top Rated" movies={topRated} />
+          <Row title="Action Thrillers" movies={actionMovies} />
+          <Row title="Comedies" movies={comedyMovies} />
+          <Row title="Scary Movies" movies={horrorMovies} />
+          <Row title="Romance Movies" movies={romanceMovies} />
+          <Row title="Documentaries" movies={documentaries} />
+        </section>
       </main>
 
       <footer className="flex h-24 w-full items-center justify-center border-t">
@@ -123,7 +193,7 @@ const Home: NextPage = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <p className='text-3xl font-black'>Hey Dawg hey whats up.</p>
+          <p className='text-3xl font-black'>That's what IIIIIII'mm saying.</p>
         </a>
       </footer>
     </div>
@@ -131,3 +201,37 @@ const Home: NextPage = () => {
 }
 
 export default Home
+
+export const getServerSideProps = async () => {
+  const [
+    trendingNow,
+    topRated,
+    actionMovies,
+    comedyMovies,
+    horrorMovies,
+    romanceMovies,
+    documentaries,
+  ] = await Promise.all([
+    fetch(requests.fetchTrending).then((res) => res.json()),
+    fetch(requests.fetchTopRated).then((res) => res.json()),
+    fetch(requests.fetchActionMovies).then((res) => res.json()),
+    fetch(requests.fetchComedyMovies).then((res) => res.json()),
+    fetch(requests.fetchHorrorMovies).then((res) => res.json()),
+    fetch(requests.fetchRomanceMovies).then((res) => res.json()),
+    fetch(requests.fetchDocumentaries).then((res) => res.json()),
+  ])
+
+  console.log(trendingNow)
+
+  return {
+    props: {
+      trendingNow: trendingNow.results,
+      topRated: topRated.results,
+      actionMovies: actionMovies.results,
+      comedyMovies: comedyMovies.results,
+      horrorMovies: horrorMovies.results,
+      romanceMovies: romanceMovies.results,
+      documentaries: documentaries.results,
+    },
+  }
+}
