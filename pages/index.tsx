@@ -2,6 +2,7 @@ import Head from 'next/head'
 import { useState, useCallback, ChangeEvent } from 'react'
 import Row from '../components/Row';
 import requests from '../utils/requests';
+import Typed from 'react-typed';
 
 type MovieRecommendation = {
   result: {
@@ -139,15 +140,21 @@ const Home = ({
   return (
     <div className="relative h-screen flex-col items-center justify-center py-2">
       <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
+        <title>Movie Night</title>
+        <link rel="icon" href="https://www.svgrepo.com/show/468899/film-roll.svg" />
       </Head>
   
-      <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center pt-12">
+      <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center pt-12 duration-500">
         <p className="px-6 font-extrabold text-transparent text-4xl md:text-6xl xl:text-8xl bg-clip-text bg-gradient-to-r from-sky-400 via-blue-600 to-purple-600 md:flex pb-16">Movie Night</p>
-        <p className='pb-16 text-3xl font-black'>
+        <p className='pb-16  text-xl sm:text-3xl font-black'>
           What are you looking for?
         </p>
+        <div className='pb-8'>
+          <Typed
+            className="text-white text-xl lg:text-3xl z-10 font-semibold"
+            strings={["Comedies?", "Korean thrillers?", "Dogs in space...", "It's here, just type it in."]} typeSpeed={80} backSpeed={40}
+            />
+        </div>
         <div className="flex flex-col items-center justify-center gap-6 p-8">
           <input className="w-full max-w-md px-4 py-3 bg-gray-100 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent !text-black" type="text" value={value} onChange={handleInput} onKeyPress={handleKeyPress} />
           <button className="px-6 py-3 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50" onClick={handleButtonClick}>Submit</button>
@@ -167,14 +174,16 @@ const Home = ({
                   </li>
                 ))}
               </ul>
+            ) : completion && completion !== 'Loading...' ? (
+              <p className="text-center text-2xl">Inappropriate Conduct</p>
             ) : (
-              <p className="text-center text-2xl">Innapropriate Conduct</p>
+              <></>
             )}
           </ul>
         </div>
       </main>
 
-      <main className='relative pl-4 pb-24 lg:space-y-24 lg:pl-16 '>
+      <main className='relative pl-4 pb-24 lg:space-y-24 pt-24 lg:pl-16 '>
         <section className='md:space-y-24'>
           <Row title="Trending Now" movies={trendingNow} />
           <Row title="Top Rated" movies={topRated} />

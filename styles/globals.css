@@ -19,7 +19,7 @@
     }
 
     .navText {
-      @apply cursor-pointer text-2xl font-black hover:text-gray-400 hidden sm:flex;
+      @apply cursor-pointer text-xl font-black hover:text-gray-400 hidden sm:flex md:text-2xl;
     }
 
     .menuTabSelected {

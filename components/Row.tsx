@@ -63,7 +63,7 @@ function Row({title, movies} : Props) {
       </h2>
       <div className='group relative md:-ml-2'>
         <ChevronLeftIcon 
-          className={`absolute top-0 bottom-0 left-2 z-50 m-auto h-9 w-9 
+          className={`absolute top-0 bottom-0 left-2 z-30 m-auto h-9 w-9 
           cursor-pointer opacity-0 transition hover:scale-125 group-hover:opacity-100 ${!isMoved && "hidden"}`}
           onClick={ () => handleClick("left")}/>
 
@@ -74,7 +74,7 @@ function Row({title, movies} : Props) {
           ))}
         </div>
         
-        <ChevronRightIcon className={`absolute top-0 bottom-0 right-2 z-50 m-auto h-9 w-9 
+        <ChevronRightIcon className={`absolute top-0 bottom-0 right-2 z-30 m-auto h-9 w-9 
         cursor-pointer opacity-0 transition hover:scale-125 group-hover:opacity-100 ${movies.length < 3 && "hidden"}`}
         onClick={ () => handleClick("right")}/>
       </div>

@@ -36,7 +36,7 @@ function NavBar({ children }: NavBarProps) {
   
   return (
     <div className="flex flex-col space-y-24">
-      <div className={`${isScrolled && 'bg-black'} mb-8 h-16 w-full fixed p-2 px-8 z-50 -pt-2`}>
+      <div className={`${isScrolled && 'bg-black'} mb-8 h-16 w-full fixed p-2 px-8 z-50 flex items-center`}>
         <ul className="flex flex-row text-white space-x-2 text-2xl w-full justify-between cursor-pointer">
         <ul className="flex flex-row space-x-6">
         <div className="flex flex-row space-x-1 group">
@@ -54,13 +54,12 @@ function NavBar({ children }: NavBarProps) {
         </ul>
           {session ? (
               <div className="flex flex-row space-x-1 group">
-                <UserIcon className="h-8 w-8 group-hover:text-gray-400"/>
-                <button className="navText group-hover:text-gray-400" onClick={handleSignOut}>Sign Out</button>
+                <UserIcon className="h-8 w-8 !flex group-hover:text-gray-400"/>
+                <button className="navText !flex group-hover:text-gray-400" onClick={handleSignOut}>Sign Out</button>
               </div>
-
             ) : (
-              <div className="flex flex-row space-x-1">
-                  <UserIcon className="h-8 w-8 group-hover:text-gray-400"/>
+              <div className="flex flex-row space-x-1 group">
+                  <UserIcon className="h-8 w-8 flex group-hover:text-gray-400"/>
                   <PopAuth />
               </div>
             )}
