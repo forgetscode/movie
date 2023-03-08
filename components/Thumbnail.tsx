@@ -31,7 +31,6 @@ interface Props {
 function Thumbnail({movie}: Props) {
 
   function createMovieSearchLink(movieTitle: string): string {
-    console.log(movieTitle)
     return `https://www6.f2movies.to/search/${movieTitle.replace(/\s+/g, '-')}`;
   }
   

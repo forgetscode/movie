@@ -144,7 +144,7 @@ const Home = ({
       </Head>
   
       <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center pt-12">
-        <p className="px-6 font-extrabold text-transparent text-4xl md:text-6xl xl:text-8xl bg-clip-text bg-gradient-to-r from-sky-400 via-blue-600 to-purple-600 hidden md:flex pb-16">Movie Night</p>
+        <p className="px-6 font-extrabold text-transparent text-4xl md:text-6xl xl:text-8xl bg-clip-text bg-gradient-to-r from-sky-400 via-blue-600 to-purple-600 md:flex pb-16">Movie Night</p>
         <p className='pb-16 text-3xl font-black'>
           What are you looking for?
         </p>
@@ -193,7 +193,6 @@ const Home = ({
           target="_blank"
           rel="noopener noreferrer"
         >
-          <p className='text-3xl font-black'>That's what IIIIIII'mm saying.</p>
         </a>
       </footer>
     </div>

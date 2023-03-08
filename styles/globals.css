@@ -17,6 +17,11 @@
     .menuTab {
       @apply bg-blue-200 border flex w-44 justify-center items-center;
     }
+
+    .navText {
+      @apply cursor-pointer text-2xl font-black hover:text-gray-400 hidden sm:flex;
+    }
+
     .menuTabSelected {
         @apply bg-blue-600 border flex w-44 justify-center items-center;
     }
