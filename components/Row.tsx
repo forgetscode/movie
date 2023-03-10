@@ -43,8 +43,6 @@ function Row({title, movies} : Props) {
       const {scrollLeft, clientWidth} = rowRef.current
       const scrollMax = rowRef.current.scrollWidth - rowRef.current.clientWidth
 
-
-      //loop back at max
       const scrollTo = (
         direction === "left" && scrollLeft != 0 ? scrollLeft - clientWidth :
         direction === "left" && scrollLeft === 0 ? scrollMax :
@@ -63,7 +61,7 @@ function Row({title, movies} : Props) {
       </h2>
       <div className='group relative md:-ml-2'>
         <ChevronLeftIcon 
-          className={`absolute top-0 bottom-0 left-2 z-30 m-auto h-9 w-9 
+          className={`absolute top-0 bottom-0 left-2 z-50 m-auto h-9 w-9 
           cursor-pointer opacity-0 transition hover:scale-125 group-hover:opacity-100 ${!isMoved && "hidden"}`}
           onClick={ () => handleClick("left")}/>
 

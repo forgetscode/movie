@@ -2,6 +2,7 @@ import Head from 'next/head'
 import { useState, useCallback, ChangeEvent } from 'react'
 import Row from '../components/Row';
 import requests from '../utils/requests';
+import { useSession } from "@supabase/auth-helpers-react";
 import Typed from 'react-typed';
 
 type MovieRecommendation = {
@@ -69,6 +70,7 @@ interface Props {
   romanceMovies: Movie[]
   documentaries: Movie[]
 }
+
 
 const Home = ({    
   actionMovies,
@@ -228,8 +230,6 @@ export const getServerSideProps = async () => {
     fetch(requests.fetchRomanceMovies).then((res) => res.json()),
     fetch(requests.fetchDocumentaries).then((res) => res.json()),
   ])
-
-  console.log(trendingNow)
 
   return {
     props: {

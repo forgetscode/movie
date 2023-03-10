@@ -1,17 +1,36 @@
 import { useSession } from "@supabase/auth-helpers-react";
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useMemo, useState } from "react";
 import { supabase } from "../utils/supabase";
 import { PopAuth } from "./PopAuth";
 import { HomeIcon, UserIcon, UsersIcon, NewspaperIcon } from "@heroicons/react/solid";
-
+import getUserInfobyAuthId from "../utils/queries/getUserInfoByAuthId";
+import Link from "next/link";
 
 type NavBarProps = {
   children: ReactNode;
 };
 
+type User = {
+  id: string
+  name: string
+  auth_id: string
+}
+
 function NavBar({ children }: NavBarProps) {
   const session = useSession();
-  console.log(session?.access_token)
+  const [user, setUser] = useState<User | null>(null)
+  const userName = useMemo(() => user?.name, [user]);
+  
+  useEffect(() => {
+    if (session && session.user?.id) {
+      const fetchData = async () => {
+        const userData = await getUserInfobyAuthId(session.user.id)
+        setUser(userData)
+      }
+      fetchData()
+    }
+  }, [session])
+
   const [isScrolled, setIsScrolled] = useState(false)
 
   async function handleSignOut() {
@@ -39,21 +58,26 @@ function NavBar({ children }: NavBarProps) {
       <div className={`${isScrolled && 'bg-black'} mb-8 h-16 w-full fixed p-2 px-8 z-50 flex items-center`}>
         <ul className="flex flex-row text-white space-x-2 text-2xl w-full justify-between cursor-pointer">
         <ul className="flex flex-row space-x-6">
-        <div className="flex flex-row space-x-1 group">
-          <HomeIcon className="h-8 w-8 group-hover:text-gray-400"/>
-          <p className="navText group-hover:text-gray-400">Home</p>
-        </div>
+        <Link href="/">
+          <div className="flex flex-row space-x-1 group">
+            <HomeIcon className="h-8 w-8 group-hover:text-gray-400"/>
+            <p className="navText group-hover:text-gray-400">Home</p>
+          </div>
+        </Link>
         <div className="flex flex-row space-x-1 group">
           <NewspaperIcon className="h-8 w-8 group-hover:text-gray-400"/>
           <p className="navText group-hover:text-gray-400">My List</p>
         </div>
-        <div className="flex flex-row space-x-1 group">
-          <UsersIcon className="h-8 w-8 group-hover:text-gray-400"/>
-          <p className="navText group-hover:text-gray-400">My Group</p>
-        </div>
+        <Link href="/group">
+          <div className="flex flex-row space-x-1 group">
+            <UsersIcon className="h-8 w-8 group-hover:text-gray-400"/>
+            <p className="navText group-hover:text-gray-400">My Group</p>
+          </div>
+        </Link>
         </ul>
           {session ? (
               <div className="flex flex-row space-x-1 group">
+                <p className="text-gray-400 text-2xl lg:flex hidden ">{userName}</p>
                 <UserIcon className="h-8 w-8 !flex group-hover:text-gray-400"/>
                 <button className="navText !flex group-hover:text-gray-400" onClick={handleSignOut}>Sign Out</button>
               </div>
