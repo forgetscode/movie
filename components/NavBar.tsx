@@ -4,6 +4,7 @@ import { supabase } from "../utils/supabase";
 import { PopAuth } from "./PopAuth";
 import { HomeIcon, UserIcon, UsersIcon, NewspaperIcon } from "@heroicons/react/solid";
 import getUserInfobyAuthId from "../utils/queries/getUserInfoByAuthId";
+import createNewUser from "../utils/mutations/createUser";
 import Link from "next/link";
 
 type NavBarProps = {
@@ -24,8 +25,15 @@ function NavBar({ children }: NavBarProps) {
   useEffect(() => {
     if (session && session.user?.id) {
       const fetchData = async () => {
-        const userData = await getUserInfobyAuthId(session.user.id)
-        setUser(userData)
+        const userData = await getUserInfobyAuthId(session.user.id);
+        if (userData?.id == '-1') {
+          const newUser = await createNewUser(session.user.id);
+          const userData = await getUserInfobyAuthId(session.user.id);
+          setUser(userData);
+        }
+        else{
+          setUser(userData);
+        }
       }
       fetchData()
     }
@@ -39,11 +47,11 @@ function NavBar({ children }: NavBarProps) {
   
   useEffect(() => {
     const handleScroll = () => {
-        if (window.scrollY > 0) {
-            setIsScrolled(true)
-        } else {
-            setIsScrolled(false)
-        }
+      if (window.scrollY > 0) {
+          setIsScrolled(true)
+      } else {
+          setIsScrolled(false)
+      }
     }
 
     window.addEventListener("scroll", handleScroll)
@@ -56,7 +64,7 @@ function NavBar({ children }: NavBarProps) {
   return (
     <div className="flex flex-col space-y-24">
       <div className={`${isScrolled && 'bg-black'} mb-8 h-16 w-full fixed p-2 px-8 z-50 flex items-center`}>
-        <ul className="flex flex-row text-white space-x-2 text-2xl w-full justify-between cursor-pointer">
+        <ul className="flex flex-row text-white space-x-2 text-2xl w-full justify-between">
         <ul className="flex flex-row space-x-6">
         <Link href="/">
           <div className="flex flex-row space-x-1 group">

@@ -14,13 +14,27 @@ async function getUserInfobyAuthId(authID: string): Promise<User | null> {
         .limit(1)
 
     if (dbError) {
-        console.error(dbError)
-        return null
+        if (dbError && dbError.message && dbError.message.includes('User not found')) {
+            const user: User = {
+                id: '-1',
+                name: '',
+                auth_id: ''
+              };
+              return user
+        }
+        else{
+            return null
+        }
+       
     }
 
     if (data.length === 0) {
-        console.error('User not found')
-        return null
+        const user: User = {
+            id: '-1',
+            name: '',
+            auth_id: ''
+          };
+          return user
     }
 
     const user: User = data[0] as User

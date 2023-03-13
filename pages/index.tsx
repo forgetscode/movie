@@ -4,6 +4,9 @@ import Row from '../components/Row';
 import requests from '../utils/requests';
 import { useSession } from "@supabase/auth-helpers-react";
 import Typed from 'react-typed';
+import { Toaster } from 'react-hot-toast';
+import { Loading } from '../components/Loader';
+import { getMovieInfo } from '../utils/searchRequest';
 
 type MovieRecommendation = {
   result: {
@@ -85,6 +88,7 @@ const Home = ({
   const [prompt, setPrompt] = useState<string>('');
   const [completion, setCompletion] = useState<string | string[]>('');
   const [completionLinks, setCompletionLinks] = useState<string | string[]>('');
+  const [searching, setSearching] = useState<boolean>(false);
 
   function createMovieSearchLinks(movieTitles: string[]): string[] {
     return movieTitles.map(title => `https://www6.f2movies.to/search/${title.replace(/\s+/g, '-')}`);
@@ -130,6 +134,9 @@ const Home = ({
       } else {
         setCompletionLinks(createMovieSearchLinks(movies));
       }
+      const movieTitles = movies.map((movie) => movie.split('(')[0].trim());
+      const movieData = await getMovieInfo(movieTitles);
+      console.log(movieData);
     }, [value]);
   
   const handleKeyPress = useCallback(
@@ -147,6 +154,7 @@ const Home = ({
       </Head>
   
       <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center pt-12 duration-500">
+        <Toaster/>
         <p className="px-6 font-extrabold text-transparent text-4xl md:text-6xl xl:text-8xl bg-clip-text bg-gradient-to-r from-sky-400 via-blue-600 to-purple-600 md:flex pb-16">Movie Night</p>
         <p className='pb-16  text-xl sm:text-3xl font-black'>
           What are you looking for?
@@ -158,14 +166,13 @@ const Home = ({
             />
         </div>
         <div className="flex flex-col items-center justify-center gap-6 p-8">
-          <input className="w-full max-w-md px-4 py-3 bg-gray-100 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent !text-black" type="text" value={value} onChange={handleInput} onKeyPress={handleKeyPress} />
+          <input className="w-full sm:w-[240px] md:w-[400px] max-w-md px-4 py-3 bg-gray-100 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent !text-black" type="text" value={value} onChange={handleInput} onKeyPress={handleKeyPress} />
           <button className="px-6 py-3 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50" onClick={handleButtonClick}>Submit</button>
-          <p className="text-center text-lg font-bold">{prompt}</p>
           <ul className="list-disc pl-4">
             {Array.isArray(completion) && (completion.length === 5)  ? (
-              <ul className="list-decimal pl-8 mt-4">
+              <ul className="list-decimal pl-8 mt-8">
                 {completion.map((movie, index) => (
-                  <li key={index} className="flex items-center mb-2">
+                  <li key={index} className="flex items-center mb-2 space-y-3">
                     <span className="text-2xl font-bold">{index + 1}.</span>
                     <span className="ml-4 text-lg font-semibold">{movie}</span>
                     {completionLinks[index] && (
@@ -176,16 +183,25 @@ const Home = ({
                   </li>
                 ))}
               </ul>
-            ) : completion && completion !== 'Loading...' ? (
-              <p className="text-center text-2xl">Inappropriate Conduct</p>
-            ) : (
+              ) :
+            completion == 'Loading...' ?(
+              <div className='pt-16 flex'>
+                <Loading/>
+              </div>
+            )
+            :
+            (completion && completion !== 'Loading...') ? (
+                <p className="text-center text-2xl pt-16">Inappropriate Conduct</p>
+            ) 
+            : 
+            (
               <></>
             )}
           </ul>
         </div>
       </main>
 
-      <main className='relative pl-4 pb-24 lg:space-y-24 pt-24 lg:pl-16 '>
+      <main className='relative pl-4 pb-24 lg:space-y-24 pt-16 lg:pl-16 '>
         <section className='md:space-y-24'>
           <Row title="Trending Now" movies={trendingNow} />
           <Row title="Top Rated" movies={topRated} />
