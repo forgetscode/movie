@@ -27,14 +27,14 @@ interface Props {
 function Card({movie}: Props) {
     console.log(movie)
     return (
-        <div className="max-w-[800px] flex flex-col p-4 rounded-lg shadow-md bg-gray-800">
+        <div className="max-w-[800px] flex flex-col p-4 rounded-lg shadow-lg bg-gray-800">
             <div className="h-full pb-2 md:pb-0 flex flex-row items-center">
                 <Thumbnail movie={movie} />
                 <h1 className="text-3xl font-black mb-2 text-white text-center w-full h-full px-2">
                     {movie.title}
                 </h1>
             </div>
-            <div className=" w-full px-4 mx-auto">
+            <div className=" w-full mx-auto">
                 <p className="text-gray-500 text-base py-5">{movie.overview}</p>
                 <div className="flex flex-row space-x-2 justify-between ">
                     <p className="text-blue-500 text-lg font-black">Rating: {movie.vote_average.toFixed(1)}/10</p>

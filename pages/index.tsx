@@ -111,6 +111,9 @@ const Home = ({
   
   const handleButtonClick = useCallback(
     async () => {
+      if (search){
+        setSearch(null);
+      }
       setCompletion('Loading...');
       const response = await fetch('/api/openai', {
         method: 'POST',
@@ -170,17 +173,18 @@ const Home = ({
           <ul className="list-disc pl-4 pt-16">
             {            
               search ? search.map((movie) => (
-                <div className='pb-4'>
+                <div className='pb-6'>
                   <Card key={movie.id} movie={movie} />
                 </div>
               ))
                 :
               completion == 'Loading...' ?(
-                <div className='pt-16 flex'>
+                <div className='pt-16 pb-8 flex'>
                   <Loading/>
-                </div>
+                </div> 
               )
                 :
+              //fix this
               (completion && completion !== 'Loading...') ? (
                   <p className="text-center text-2xl pt-16">Inappropriate Conduct</p>
               ) 
@@ -193,7 +197,7 @@ const Home = ({
         </div>
       </main>
 
-      <main className='relative pl-4 pb-24 lg:space-y-24 pt-16 lg:pl-16 '>
+      <main className='relative pl-4 pb-24 lg:space-y-24 pt-8 lg:pl-16 '>
         <section className='md:space-y-24'>
           <Row title="Trending Now" movies={trendingNow} />
           <Row title="Top Rated" movies={topRated} />
