@@ -1,11 +1,6 @@
 import ImageWithFallback from "./ImageWithFallback"
 
-export interface Genre {
-    id: number
-    name: string
-  }
-  
-  export interface Movie {
+export interface Movie {
   title: string
   backdrop_path: string
   media_type?: string
@@ -22,10 +17,10 @@ export interface Genre {
   poster_path: string
   vote_average: number
   vote_count: number
-  }
+}
 
 interface Props {
-    movie: Movie 
+  movie: Movie 
 }
 
 function Thumbnail({movie}: Props) {

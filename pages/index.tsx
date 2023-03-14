@@ -7,6 +7,7 @@ import Typed from 'react-typed';
 import { Toaster } from 'react-hot-toast';
 import { Loading } from '../components/Loader';
 import { getMovieInfo } from '../utils/searchRequest';
+import Card from '../components/Card';
 
 type MovieRecommendation = {
   result: {
@@ -85,10 +86,9 @@ const Home = ({
   trendingNow,
   }:Props ) => {
   const [value, setValue] = useState<string>('');
-  const [prompt, setPrompt] = useState<string>('');
+  const [search, setSearch] = useState<Movie[] | null>(null);
   const [completion, setCompletion] = useState<string | string[]>('');
   const [completionLinks, setCompletionLinks] = useState<string | string[]>('');
-  const [searching, setSearching] = useState<boolean>(false);
 
   function createMovieSearchLinks(movieTitles: string[]): string[] {
     return movieTitles.map(title => `https://www6.f2movies.to/search/${title.replace(/\s+/g, '-')}`);
@@ -111,7 +111,6 @@ const Home = ({
   
   const handleButtonClick = useCallback(
     async () => {
-      setPrompt(value);
       setCompletion('Loading...');
       const response = await fetch('/api/openai', {
         method: 'POST',
@@ -136,7 +135,7 @@ const Home = ({
       }
       const movieTitles = movies.map((movie) => movie.split('(')[0].trim());
       const movieData = await getMovieInfo(movieTitles);
-      console.log(movieData);
+      setSearch(movieData);
     }, [value]);
   
   const handleKeyPress = useCallback(
@@ -168,35 +167,28 @@ const Home = ({
         <div className="flex flex-col items-center justify-center gap-6 p-8">
           <input className="w-full sm:w-[240px] md:w-[400px] max-w-md px-4 py-3 bg-gray-100 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent !text-black" type="text" value={value} onChange={handleInput} onKeyPress={handleKeyPress} />
           <button className="px-6 py-3 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50" onClick={handleButtonClick}>Submit</button>
-          <ul className="list-disc pl-4">
-            {Array.isArray(completion) && (completion.length === 5)  ? (
-              <ul className="list-decimal pl-8 mt-8">
-                {completion.map((movie, index) => (
-                  <li key={index} className="flex items-center mb-2 space-y-3">
-                    <span className="text-2xl font-bold">{index + 1}.</span>
-                    <span className="ml-4 text-lg font-semibold">{movie}</span>
-                    {completionLinks[index] && (
-                      <button className="ml-4 px-4 py-2 rounded-md bg-blue-500 text-white font-semibold hover:bg-blue-600" onClick={() => window.open(completionLinks[index], '_blank')}>
-                        Watch
-                      </button>
-                    )}
-                  </li>
-                ))}
-              </ul>
-              ) :
-            completion == 'Loading...' ?(
-              <div className='pt-16 flex'>
-                <Loading/>
-              </div>
-            )
-            :
-            (completion && completion !== 'Loading...') ? (
-                <p className="text-center text-2xl pt-16">Inappropriate Conduct</p>
-            ) 
-            : 
-            (
-              <></>
-            )}
+          <ul className="list-disc pl-4 pt-16">
+            {            
+              search ? search.map((movie) => (
+                <div className='pb-4'>
+                  <Card key={movie.id} movie={movie} />
+                </div>
+              ))
+                :
+              completion == 'Loading...' ?(
+                <div className='pt-16 flex'>
+                  <Loading/>
+                </div>
+              )
+                :
+              (completion && completion !== 'Loading...') ? (
+                  <p className="text-center text-2xl pt-16">Inappropriate Conduct</p>
+              ) 
+                : 
+              (
+                <></>
+              )
+            }
           </ul>
         </div>
       </main>
