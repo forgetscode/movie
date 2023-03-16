@@ -1,5 +1,7 @@
 import React from "react";
+import { AlterListButton } from "./Buttons/AlterListButton";
 import { GroupListButton } from "./Buttons/GroupListButton";
+import WatchButton from "./Buttons/WatchButton";
 import Thumbnail from "./Thumbnail";
 
 export interface Movie {
@@ -35,13 +37,21 @@ function Card({movie}: Props) {
                     {movie.title}
                 </h1>
             </div>
-            <div className=" w-full mx-auto">
+            <div className="w-full mx-auto">
                 <p className="text-gray-500 text-base py-5">{movie.overview}</p>
-                <div className="flex flex-row space-x-2 justify-between ">
+                <div className="flex flex-row space-x-2 justify-between pb-5">
                     <p className="text-blue-500 text-lg font-black">Rating: {movie.vote_average.toFixed(1)}/10</p>
                     <p className="text-white text-lg font-black">{movie.release_date?.slice(0, 4)}</p>
                 </div>
-                <GroupListButton />
+                <div className="flex space-x-4 pt-5 justify-between">
+                    <div className="flex space-x-4">
+                        <WatchButton movieTitle={movie.title}/>
+                        <AlterListButton movie={movie} />
+                    </div>
+                    <div>
+                        <GroupListButton />
+                    </div>
+                </div>
             </div>
         </div>
     );
