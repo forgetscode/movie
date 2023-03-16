@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { useState, useCallback, ChangeEvent } from 'react'
+import { useState, useCallback, ChangeEvent, useEffect } from 'react'
 import Row from '../components/Row';
 import requests from '../utils/requests';
 import Typed from 'react-typed';
@@ -7,6 +7,8 @@ import { Toaster } from 'react-hot-toast';
 import { Loading } from '../components/Loader';
 import { getMovieInfo } from '../utils/searchRequest';
 import Card from '../components/Card';
+import { MovieDBAPI } from '../utils/showMore';
+import Thumbnail from '../components/Thumbnail';
 
 type MovieRecommendation = {
   result: {
@@ -74,6 +76,7 @@ interface Props {
   documentaries: Movie[]
 }
 
+const api = new MovieDBAPI();
 
 const Home = ({    
   actionMovies,
@@ -87,10 +90,7 @@ const Home = ({
   const [value, setValue] = useState<string>('');
   const [search, setSearch] = useState<Movie[] | null>(null);
   const [completion, setCompletion] = useState<string | string[]>('');
-
-  function createMovieSearchLinks(movieTitles: string[]): string[] {
-    return movieTitles.map(title => `https://www6.f2movies.to/search/${title.replace(/\s+/g, '-')}`);
-  }
+  const [movies, setMovies] = useState<Movie[]>([]);
 
   function parseCompletion(completion: string): string[] {
     const regex = /\d+\. (.+)/g;
@@ -140,7 +140,12 @@ const Home = ({
         handleButtonClick();
       }
     }, [handleButtonClick]);
-  
+
+    const fetchMovies = async () => {
+      const newMovies = await api.get20RandomMovies();
+      setMovies((prevMovies) => [...prevMovies, ...newMovies]);
+    };
+
   return (
     <div className="relative h-screen flex-col items-center justify-center py-2">
       <Head>
@@ -166,7 +171,7 @@ const Home = ({
           <ul className="list-disc pl-4 pt-16">
             {search && search.length > 0 && search.every(Boolean) ? (
               search.map((movie) => (
-                <div key={movie.id} className='pb-6'>
+                <div key={movie.id} className='pb-8'>
                   <Card key={movie.id} movie={movie} />
                 </div>
               ))
@@ -183,8 +188,8 @@ const Home = ({
         </div>
       </main>
 
-      <main className='relative pl-4 pb-24 lg:space-y-24 pt-8 lg:pl-16 '>
-        <section className='md:space-y-24'>
+      <main className='relative pl-4 pb-24 lg:space-y-24 lg:pl-16 '>
+        <section className='md:space-y-16'>
           <Row title="Trending Now" movies={trendingNow} />
           <Row title="Top Rated" movies={topRated} />
           <Row title="Action Thrillers" movies={actionMovies} />
@@ -195,7 +200,7 @@ const Home = ({
         </section>
       </main>
 
-      <footer className="flex h-24 w-full items-center justify-center border-t">
+      <footer className="">
         <a
           className="flex items-center justify-center gap-2"
           href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
@@ -203,6 +208,18 @@ const Home = ({
           rel="noopener noreferrer"
         >
         </a>
+        <div className="relative mx-auto px-16">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
+            {movies?.map((movie) => (
+                <Thumbnail key={movie.id} movie={movie}/>
+            ))}
+          </div>
+          <div className="flex justify-center pb-16">
+            <button className="px-6 py-3 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50" onClick={fetchMovies}>
+              Show More
+            </button>
+          </div>
+        </div>
       </footer>
     </div>
   )

@@ -43,6 +43,7 @@ function Card({movie}: Props) {
                     <p className="text-blue-500 text-lg font-black">Rating: {movie.vote_average.toFixed(1)}/10</p>
                     <p className="text-white text-lg font-black">{movie.release_date?.slice(0, 4)}</p>
                 </div>
+                <hr className="border-b border-gray-600"/>
                 <div className="flex space-x-4 pt-5 justify-between">
                     <div className="flex space-x-4">
                         <WatchButton movieTitle={movie.title}/>

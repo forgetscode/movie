@@ -10,7 +10,7 @@ export const notifySuccess = (message:string) =>
             style: {
                 fontWeight: '900',
                 flex: 1,
-                fontSize: '1.2rem',
+                fontSize: '1rem',
                 maxWidth: '250px',
                 background: '#202225',
                 color: 'white',
@@ -28,7 +28,7 @@ export const notifyFailure = (message:string) =>
                 fontWeight: '900',
                 maxWidth: '250px',
                 flex: 1,
-                fontSize: '1.2rem',
+                fontSize: '1rem',
                 background: '#202225',
                 color: 'red',
             },
