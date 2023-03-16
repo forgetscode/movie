@@ -9,6 +9,7 @@ import { getMovieInfo } from '../utils/searchRequest';
 import Card from '../components/Card';
 import { MovieDBAPI } from '../utils/showMore';
 import Thumbnail from '../components/Thumbnail';
+import ThumbnailTitle from '../components/ThumbnailTitle';
 
 type MovieRecommendation = {
   result: {
@@ -211,10 +212,10 @@ const Home = ({
         <div className="relative mx-auto px-16">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
             {movies?.map((movie) => (
-                <Thumbnail key={movie.id} movie={movie}/>
+                <ThumbnailTitle key={movie.id} movie={movie}/>
             ))}
           </div>
-          <div className="flex justify-center pb-16">
+          <div className="flex justify-center pt-8 pb-16">
             <button className="px-6 py-3 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50" onClick={fetchMovies}>
               Show More
             </button>

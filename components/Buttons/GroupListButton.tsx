@@ -24,7 +24,7 @@ export function GroupListButton() {
       <Listbox value={selectedPerson} onChange={setSelectedPerson}>
         <div className="relative">
           <div className='flex flex-col w-40'>
-            <p className='-ml-[58px] text-white'>Add to Group:</p>
+            <p className='text-white'>Add to Group:</p>
             <Listbox.Button className="text-white underline flex flex-row items-center">
               {selectedPerson.name}
               <ChevronDownIcon className="w-5 h-5 ml-1" />

@@ -25,7 +25,7 @@ interface Props {
   movie: Movie;
 }
 
-function Thumbnail({ movie }: Props) {
+function ThumbnailTitle({ movie }: Props) {
   const [showModal, setShowModal] = useState(false);
 
   function createMovieSearchLink(movieTitle: string): string {
@@ -47,8 +47,8 @@ function Thumbnail({ movie }: Props) {
       ease-out md:h-36 md:min-w-[260px] md:hover:scale-105 z-20"
         onClick={handleThumbnailClick}
       >
-        <div className="absolute w-full h-full opacity-0 hover:opacity-100 z-40">
-          <p className="absolute inset-x-0 bottom-0 text-shadow-md text-bold text-md md:text-lg p-1 bg-gradient-to-r from-[#2a2a2a]/30 to-[#2a2a2a]/0 ">
+        <div className="absolute w-full h-full opacity-100 z-40">
+          <p className="absolute inset-x-0 bottom-0 text-shadow-md text-bold text-md md:text-lg p-1 bg-gradient-to-r from-[#2a2a2a]/80 to-[#2a2a2a]/30 ">
             {movie.name ? movie.name : movie.title}
           </p>
         </div>
@@ -66,4 +66,4 @@ function Thumbnail({ movie }: Props) {
   );
 }
 
-export default Thumbnail;
+export default ThumbnailTitle;

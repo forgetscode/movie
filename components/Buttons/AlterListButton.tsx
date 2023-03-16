@@ -32,13 +32,11 @@ interface Props {
     const handleAddToList = async () => {
       setInList(true);
       notifySuccess("Added to list");
-      // call Supabase RPC function to add movie to user's list
     };
   
     const handleRemoveFromList = async () => {
       setInList(false);
       notifySuccess("Removed from list");
-      // call Supabase RPC function to remove movie from user's list
     };
   
     const addButtonLabel = inList ? "Remove from list" : "Add to list";
@@ -47,7 +45,7 @@ interface Props {
         <button
             className={`${
             inList
-                ? "border-red-500 text-red-500 focus:ring-red-500 hover:border-red-600 hover:text-red-600"
+                ? "border-white text-white focus:ring-white hover:border-white hover:text-white"
                 : "border-blue-500 text-blue-500 focus:ring-blue-500 hover:border-blue-600 hover:text-blue-600"
             } px-6 py-3 border rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-opacity-50`}
             onClick={inList ? handleRemoveFromList : handleAddToList}
