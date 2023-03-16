@@ -1,4 +1,5 @@
 import React from "react";
+import { GroupListButton } from "./Buttons/GroupListButton";
 import Thumbnail from "./Thumbnail";
 
 export interface Movie {
@@ -40,6 +41,7 @@ function Card({movie}: Props) {
                     <p className="text-blue-500 text-lg font-black">Rating: {movie.vote_average.toFixed(1)}/10</p>
                     <p className="text-white text-lg font-black">{movie.release_date?.slice(0, 4)}</p>
                 </div>
+                <GroupListButton />
             </div>
         </div>
     );

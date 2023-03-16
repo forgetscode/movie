@@ -2,7 +2,6 @@ import Head from 'next/head'
 import { useState, useCallback, ChangeEvent } from 'react'
 import Row from '../components/Row';
 import requests from '../utils/requests';
-import { useSession } from "@supabase/auth-helpers-react";
 import Typed from 'react-typed';
 import { Toaster } from 'react-hot-toast';
 import { Loading } from '../components/Loader';
@@ -88,7 +87,6 @@ const Home = ({
   const [value, setValue] = useState<string>('');
   const [search, setSearch] = useState<Movie[] | null>(null);
   const [completion, setCompletion] = useState<string | string[]>('');
-  const [completionLinks, setCompletionLinks] = useState<string | string[]>('');
 
   function createMovieSearchLinks(movieTitles: string[]): string[] {
     return movieTitles.map(title => `https://www6.f2movies.to/search/${title.replace(/\s+/g, '-')}`);
@@ -126,19 +124,14 @@ const Home = ({
       setValue('');
       const content = data.result.choices[0].message.content;
       const movies = parseCompletion(content);
+      const movieTitles = movies.map((movie) => movie.split('(')[0].trim());
+      const movieData = await getMovieInfo(movieTitles);
+      setSearch(movieData);
       if (movies.length === 1) {
         setCompletion(movies[0]);
       } else {
         setCompletion(movies);
       }
-      if (movies.length === 1) {
-        setCompletion(movies[0]);
-      } else {
-        setCompletionLinks(createMovieSearchLinks(movies));
-      }
-      const movieTitles = movies.map((movie) => movie.split('(')[0].trim());
-      const movieData = await getMovieInfo(movieTitles);
-      setSearch(movieData);
     }, [value]);
   
   const handleKeyPress = useCallback(
@@ -171,28 +164,21 @@ const Home = ({
           <input className="w-full sm:w-[240px] md:w-[400px] max-w-md px-4 py-3 bg-gray-100 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent !text-black" type="text" value={value} onChange={handleInput} onKeyPress={handleKeyPress} />
           <button className="px-6 py-3 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50" onClick={handleButtonClick}>Submit</button>
           <ul className="list-disc pl-4 pt-16">
-            {            
-              search ? search.map((movie) => (
-                <div className='pb-6'>
+            {search && search.length > 0 && search.every(Boolean) ? (
+              search.map((movie) => (
+                <div key={movie.id} className='pb-6'>
                   <Card key={movie.id} movie={movie} />
                 </div>
               ))
-                :
-              completion == 'Loading...' ?(
-                <div className='pt-16 pb-8 flex'>
-                  <Loading/>
-                </div> 
-              )
-                :
-              //fix this
-              (completion && completion !== 'Loading...') ? (
-                  <p className="text-center text-2xl pt-16">Inappropriate Conduct</p>
-              ) 
-                : 
-              (
-                <></>
-              )
-            }
+            ) : completion == 'Loading...' ? (
+              <div className='pt-16 pb-8 flex'>
+                <Loading/>
+              </div> 
+            ) : completion && completion !== 'Loading...' ? (
+              <p className="text-center text-2xl pt-16">Inappropriate Conduct</p>
+            ) : (
+              <></>
+            )}
           </ul>
         </div>
       </main>

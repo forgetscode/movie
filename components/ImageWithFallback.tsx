@@ -18,7 +18,7 @@ const ImageWithFallback = (props:Props) => {
                 setImgSrc(fallbackSrc);
             }}
             className="rounded-sm object-cover md:rounded"
-            alt=''
+            alt="/tailwind-css-icon.webp"
             layout="fill"
         />
     );
