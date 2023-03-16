@@ -92,6 +92,8 @@ const Home = ({
   const [search, setSearch] = useState<Movie[] | null>(null);
   const [completion, setCompletion] = useState<string | string[]>('');
   const [movies, setMovies] = useState<Movie[]>([]);
+  const [showHeader, setShowHeader] = useState(false);
+  const [message, setMessage] = useState<string>('');
 
   function parseCompletion(completion: string): string[] {
     const regex = /\d+\. (.+)/g;
@@ -124,6 +126,7 @@ const Home = ({
       const data: MovieRecommendation = await response.json();
       setValue('');
       const content = data.result.choices[0].message.content;
+      setMessage(content)
       const movies = parseCompletion(content);
       const movieTitles = movies.map((movie) => movie.split('(')[0].trim());
       const movieData = await getMovieInfo(movieTitles);
@@ -145,6 +148,7 @@ const Home = ({
     const fetchMovies = async () => {
       const newMovies = await api.get20RandomMovies();
       setMovies((prevMovies) => [...prevMovies, ...newMovies]);
+      setShowHeader(true);
     };
 
   return (
@@ -173,15 +177,17 @@ const Home = ({
             {search && search.length > 0 && search.every(Boolean) ? (
               search.map((movie) => (
                 <div key={movie.id} className='pb-8'>
-                  <Card key={movie.id} movie={movie} />
+                  <Card movie={movie} />
                 </div>
               ))
             ) : completion == 'Loading...' ? (
               <div className='pt-16 pb-8 flex'>
                 <Loading/>
               </div> 
-            ) : completion && completion !== 'Loading...' ? (
-              <p className="text-center text-2xl pt-16">Inappropriate Conduct</p>
+            ) : completion && completion !== 'Loading...' && search && search.length <1 ? (
+              <p className="text-center text-2xl py-16">
+                {message}
+              </p>
             ) : (
               <></>
             )}
@@ -189,7 +195,7 @@ const Home = ({
         </div>
       </main>
 
-      <main className='relative pl-4 pb-24 lg:space-y-24 lg:pl-16 '>
+      <main className='relative pl-4 pb-16 lg:space-y-24 lg:pl-16 '>
         <section className='md:space-y-16'>
           <Row title="Trending Now" movies={trendingNow} />
           <Row title="Top Rated" movies={topRated} />
@@ -210,6 +216,11 @@ const Home = ({
         >
         </a>
         <div className="relative mx-auto px-16">
+          {
+          showHeader && 
+          <p className='text-sm font-semibold 
+          text-[#e5e5e5] transition duration-200 hover:text-white md:text-2xl py-8'>Random Movies</p>
+          }
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
             {movies?.map((movie) => (
                 <ThumbnailTitle key={movie.id} movie={movie}/>

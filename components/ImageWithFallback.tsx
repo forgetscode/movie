@@ -13,7 +13,7 @@ const ImageWithFallback = (props: Props) => {
   return (
     <div className="relative rounded-sm object-cover md:rounded w-full h-full">
       {!isImageReady && (
-        <div className="absolute inset-0 bg-gray-500 ring-2 ring-[#141414] animate-pulse" />
+        <div className="absolute inset-0 bg-gray-700 ring-2 ring-[#141414] animate-pulse" />
       )}
       <Image
         {...rest}
@@ -24,7 +24,7 @@ const ImageWithFallback = (props: Props) => {
         onLoad={() => {
           setIsImageReady(true);
         }}
-        alt=""
+        alt="https://www.svgrepo.com/show/429915/not-found-error-alert.svg"
         layout="fill"
       />
     </div>
