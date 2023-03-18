@@ -10,7 +10,7 @@ import JoinGroupButton from '../components/Buttons/JoinGroupButtonForm';
 import LeaveGroupButton from '../components/Buttons/LeaveGroupButton';
 import { Toaster } from 'react-hot-toast';
 import CreateGroupButton from '../components/Buttons/CreateGroupButton';
-import { CogIcon, UsersIcon, PlusIcon, MinusIcon } from '@heroicons/react/solid';
+import { CogIcon, UsersIcon, ClipboardCopyIcon } from '@heroicons/react/solid';
 import { Disclosure, Transition } from '@headlessui/react';
 
 type User = {
@@ -119,7 +119,7 @@ const Group: NextPage = () => {
                                     onClick={() => navigator.clipboard.writeText(group.group_id)}
                                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                                   >
-                                    <PlusIcon className="w-4 h-4" />
+                                    <ClipboardCopyIcon className="w-4 h-4" />
                                   </button>
                                 </div>
                               </div>

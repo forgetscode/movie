@@ -38,7 +38,7 @@ const JoinGroupButton: React.FC<JoinGroupButtonProps> = ({ userId }) => {
         />
         <button
           type="submit"
-          className="w-60 px-4 py-2 text-white font-bold bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
+          className="w-60 px-4 py-2 text-white font-bold bg-blue-700 rounded-md hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
           disabled={isJoining}
         >
           {isJoining ? (

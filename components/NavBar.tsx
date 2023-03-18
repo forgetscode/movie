@@ -72,10 +72,12 @@ function NavBar({ children }: NavBarProps) {
             <p className="navText group-hover:text-gray-400">Home</p>
           </div>
         </Link>
+        <Link href="/mylist">
         <div className="flex flex-row space-x-1 group">
           <NewspaperIcon className="h-8 w-8 group-hover:text-gray-400"/>
           <p className="navText group-hover:text-gray-400">My List</p>
         </div>
+        </Link>
         <Link href="/group">
           <div className="flex flex-row space-x-1 group">
             <UsersIcon className="h-8 w-8 group-hover:text-gray-400"/>

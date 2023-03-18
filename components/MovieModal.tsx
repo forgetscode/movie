@@ -79,8 +79,8 @@ export function MovieModal({ movie, onClose }: Props) {
     >
       <div className="flex items-center justify-center min-h-screen max-w-[800px] mx-auto">
         <Dialog.Overlay className="fixed inset-0 bg-black opacity-60" />
-        <div className="relative bg-gray-800 rounded-lg w-full h-full flex flex-col justify-center items-center shadow-md shadow-gray-800">
-          <div className="bg-gray-800 w-full h-[400px] flex justify-center items-center rounded-t-lg pt-3 px-3">
+        <div className="relative bg-zinc-900 rounded-lg w-full h-full flex flex-col justify-center items-center shadow-md shadow-zinc-900">
+          <div className="bg-zinc-900 w-full h-[400px] flex justify-center items-center rounded-t-lg pt-3 px-3">
             {isLoading ? (
               <div className="w-10 h-10 border-4 border-gray-300 rounded-full animate-spin"></div>
             ) : (
