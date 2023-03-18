@@ -9,6 +9,9 @@ import Head from 'next/head';
 import JoinGroupButton from '../components/Buttons/JoinGroupButtonForm';
 import LeaveGroupButton from '../components/Buttons/LeaveGroupButton';
 import { Toaster } from 'react-hot-toast';
+import CreateGroupButton from '../components/Buttons/CreateGroupButton';
+import { CogIcon, UsersIcon, PlusIcon, MinusIcon } from '@heroicons/react/solid';
+import { Disclosure, Transition } from '@headlessui/react';
 
 type User = {
   id: string;
@@ -28,6 +31,7 @@ const Group: NextPage = () => {
   const [user, setUser] = useState<User | undefined | null>();
   const [groups, setGroups] = useState<Group[] | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [isOpen, setIsOpen] = useState(false);
   const [isJoining, setIsJoining] = useState(false)
 
   useEffect(() => {
@@ -72,28 +76,69 @@ const Group: NextPage = () => {
         <title>Movie Night</title>
         <link rel="icon" href="https://www.svgrepo.com/show/468899/film-roll.svg" />
       </Head>
-      <main className="flex h-full w-full flex-1 flex-col px-20 text-center pt-20 space-y-6">
+      <main className="flex h-full w-full flex-1 flex-col px-20 text-center space-y-6 pb-16">
         <Toaster/>
-        <h2 className="text-6xl font-black text-white pb-16">Groups</h2>
-        {
-            groups && groups.length > 0 
-            ? 
-            groups && groups.map((group, index) => (
-              <div className="group-card bg-gray-800 rounded-lg shadow-lg p-6 flex flex-col justify-between">
-                <div className='space-y-4'>
-                  <h1 className="text-2xl font-bold text-white mb-2">{group.group_name}</h1>
-                  <h1 className="text-2xl font-bold text-white mb-2">{group.group_id}</h1>
-                  <p className="text-lg text-gray-400">{group.group_description}</p>
-                  <LeaveGroupButton userId={user.id} groupId={group.group_id} />
-                </div>
-              </div>
-            ))
-            :
+      <Disclosure>
+          {({ open }) => (
             <>
-            <p className='text-white text-2xl font-black pb-16'> {`You aren't part of a group but you can join one below by entering the group ID.`}</p>
+              <Disclosure.Button className="flex items-center justify-between border-2 w-4/6 min-w-[400px] mx-auto p-4 text-white font-black text-3xl rounded-2xl focus:outline-none group">
+                <div className="flex items-center">
+                  <UsersIcon className="w-10 h-10 mr-4" />
+                  Group Settings
+                </div>
+                <CogIcon className="w-8 h-8 group-hover:animate-spin" />
+              </Disclosure.Button>
+              <Transition
+                show={open}
+                enter="transition ease-out duration-300"
+                enterFrom="transform opacity-0 -translate-y-4"
+                enterTo="transform opacity-100 translate-y-0"
+                leave="transition ease-in duration-300"
+                leaveFrom="transform opacity-100 translate-y-0"
+                leaveTo="transform opacity-0 -translate-y-4"
+              >
+                <Disclosure.Panel className="w-4/6 mt-2 min-w-[400px] mx-auto border-2 rounded-lg p-4">
+                  <div className="space-y-6">
+                    {/* Create Group Section */}
+                    <CreateGroupButton userId={user.id} groups={groups} />
+                    {/* Join Group Section */}
+                    <JoinGroupButton userId={user.id} />
+                    {
+                      groups && groups.length > 0
+                        ? groups.map((group, index) => (
+                            <div
+                              className={` flex flex-col justify-between space-y-4 ${
+                                index === groups.length - 1 ? '' : 'border-b border-gray-300 pb-6'
+                              }`}
+                            >
+                              <div className="flex justify-between items-center">
+                                <h1 className="text-2xl font-black text-white">{group.group_name}</h1>
+                                <div className="flex items-center space-x-2">
+                                  <span className="text-lg text-white font-bold">Group ID:</span>
+                                  <button
+                                    onClick={() => navigator.clipboard.writeText(group.group_id)}
+                                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                  >
+                                    <PlusIcon className="w-4 h-4" />
+                                  </button>
+                                </div>
+                              </div>
+                              <p className="text-lg text-gray-400 pb-2">{group.group_description}</p>
+                              <div>
+                                <LeaveGroupButton userId={user.id} groupId={group.group_id} />
+                              </div>
+                            </div>
+                          ))
+                        : null
+                    }
+                  </div>
+                </Disclosure.Panel>
+              </Transition>
             </>
-        }
-        <JoinGroupButton userId={user.id} />
+          )}
+        </Disclosure>
+
+
       </main>
     </div>
   );

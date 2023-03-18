@@ -24,7 +24,7 @@ const ImageWithFallback = (props: Props) => {
         onLoad={() => {
           setIsImageReady(true);
         }}
-        alt="https://www.svgrepo.com/show/429915/not-found-error-alert.svg"
+        alt=""
         layout="fill"
       />
     </div>

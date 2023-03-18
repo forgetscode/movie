@@ -11,7 +11,7 @@ const people = [
   { id: 5, name: 'Katelyn Rohan', unavailable: false },
 ]
 
-export function GroupListButton() {
+export function GroupListButton({ up=false }) {
   const [selectedPerson, setSelectedPerson] = useState(people[0])
 
   const handleAddToGroupList = async () => {
@@ -30,7 +30,7 @@ export function GroupListButton() {
               <ChevronDownIcon className="w-5 h-5 ml-1" />
             </Listbox.Button>
           </div>
-          <Listbox.Options className="absolute z-50 mt-1 w-40 bg-white shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm origin-top-left left-0">
+          <Listbox.Options className={`absolute z-50 mt-1 w-40 bg-white shadow-lg max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm origin-top-left left-0 ${up ? 'transform -translate-y-full' : ''}`}>
             {people.map((person) => (
               <Listbox.Option
                 key={person.id}

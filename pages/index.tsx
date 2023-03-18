@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { useState, useCallback, ChangeEvent, useEffect } from 'react'
+import { useState, useCallback, ChangeEvent } from 'react'
 import Row from '../components/Row';
 import requests from '../utils/requests';
 import Typed from 'react-typed';
@@ -8,7 +8,6 @@ import { Loading } from '../components/Loader';
 import { getMovieInfo } from '../utils/searchRequest';
 import Card from '../components/Card';
 import { MovieDBAPI } from '../utils/showMore';
-import Thumbnail from '../components/Thumbnail';
 import ThumbnailTitle from '../components/ThumbnailTitle';
 
 type MovieRecommendation = {

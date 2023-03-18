@@ -13,7 +13,7 @@ type Group = {
   };
 
 async function joinGroupByUser(userId: string, groupId: string): Promise<void> {
-  const { error } = await supabase.rpc('join_user_to_group', {
+  const { error } = await supabase.rpc('join_user_to_group2', {
     userid: userId,
     groupid: groupId
   })

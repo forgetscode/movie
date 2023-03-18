@@ -26,9 +26,10 @@ export interface Movie {
 interface Props {
   movie: Movie 
   clickable?: boolean
+  modal?: boolean
 }
 
-function Card({movie, clickable = true}: Props) {
+function Card({movie, clickable = true, modal = false}: Props) {
   const [expanded, setExpanded] = useState(false);
 
   const toggleExpansion = () => {
@@ -38,7 +39,7 @@ function Card({movie, clickable = true}: Props) {
   const overviewText = movie.overview.length > 500 ? (expanded ? movie.overview : `${movie.overview.slice(0, 500)}...`) : movie.overview;
 
   return (
-    <div className="max-w-[800px] flex flex-col p-4 rounded-lg shadow-lg bg-gray-800">
+    <div className="max-w-[800px] flex flex-col p-4 rounded-lg bg-gray-800">
       <div className="h-full pb-2 md:pb-0 flex flex-row items-center">
         <div className={`${clickable ? 'cursor-pointer' : ''}`} style={{ pointerEvents: clickable ? 'auto' : 'none' }}>
           <Thumbnail movie={movie} />
@@ -67,7 +68,7 @@ function Card({movie, clickable = true}: Props) {
             <AlterListButton movie={movie} />
           </div>
           <div>
-            <GroupListButton />
+            <GroupListButton up={modal}/>
           </div>
         </div>
       </div>

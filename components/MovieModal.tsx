@@ -93,7 +93,7 @@ export function MovieModal({ movie, onClose }: Props) {
             )}
           </div>
           <div className="w-full">
-            <Card movie={movie} clickable={false} />
+            <Card movie={movie} clickable={false} modal={true} />
           </div>
         </div>
       </div>
