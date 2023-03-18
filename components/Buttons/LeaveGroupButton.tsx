@@ -5,9 +5,10 @@ import { notifySuccess, notifyFailure } from '../Toast';
 type Props = {
   userId: string;
   groupId: string;
+  setUpdate: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const LeaveGroupButton: React.FC<Props> = ({ userId, groupId }) => {
+const LeaveGroupButton: React.FC<Props> = ({ userId, groupId, setUpdate }) => {
   const [isLeaving, setIsLeaving] = useState(false);
 
   const handleLeave = async () => {
@@ -15,6 +16,7 @@ const LeaveGroupButton: React.FC<Props> = ({ userId, groupId }) => {
     try {
       await leaveGroupByUser(userId, groupId);
       notifySuccess("Group left.")
+      setUpdate((update) => !update); 
     } catch (error) {
       console.error(error);
       notifyFailure("Could not leave group.")

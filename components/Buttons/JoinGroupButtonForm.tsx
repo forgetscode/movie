@@ -4,9 +4,10 @@ import { notifyFailure, notifySuccess } from '../Toast';
 
 type JoinGroupButtonProps = {
   userId: string;
+  setUpdate: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const JoinGroupButton: React.FC<JoinGroupButtonProps> = ({ userId }) => {
+const JoinGroupButton: React.FC<JoinGroupButtonProps> = ({ userId, setUpdate }) => {
   const [groupId, setGroupId] = useState<string>('');
   const [isJoining, setIsJoining] = useState<boolean>(false);
 
@@ -16,6 +17,7 @@ const JoinGroupButton: React.FC<JoinGroupButtonProps> = ({ userId }) => {
     try {
       await joinGroupByUser(userId, groupId);
       notifySuccess('Group joined.');
+      setUpdate((update) => !update); 
     } catch (error) {
       console.log(error);
       notifyFailure('Failed to join group.');
@@ -24,8 +26,8 @@ const JoinGroupButton: React.FC<JoinGroupButtonProps> = ({ userId }) => {
   };
 
   return (
-    <div className="border-b border-gray-300 pb-4">
-      <h2 className="text-lg font-semibold">Join Group</h2>
+    <div className="border-b border-gray-300 pb-6">
+      <h2 className="text-2xl font-black">Join Group</h2>
       <form onSubmit={handleSubmit} className="mt-4 space-y-4">
         <input
           type="text"

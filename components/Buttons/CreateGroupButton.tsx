@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import createGroupByUser from '../../utils/mutations/createGroupByUser';
-import { notifySuccess } from '../Toast';
+import { notifyFailure, notifySuccess } from '../Toast';
 
 type Group = {
   group_id: string;
@@ -11,9 +11,10 @@ type Group = {
 type Props = {
   userId: string;
   groups: Group[];
+  setUpdate: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const CreateGroupButton: React.FC<Props> = ({ userId }) => {
+const CreateGroupButton: React.FC<Props> = ({ userId, setUpdate  }) => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
 
@@ -21,14 +22,16 @@ const CreateGroupButton: React.FC<Props> = ({ userId }) => {
     try {
       const newGroup = await createGroupByUser(name, description, userId);
       notifySuccess('Group created.');
+      setUpdate((update) => !update); 
     } catch (error) {
+      notifyFailure('Creation failed, group name may already exists.');
       console.error(error);
     }
   };
 
   return (
-    <div className="border-b border-gray-300 pb-4">
-      <h2 className="text-lg font-semibold">Create Group</h2>
+    <div className="border-b border-gray-300 pb-6">
+      <h2 className="text-2xl font-black">Create Group</h2>
       <div className="mt-4 space-y-4">
         <input
           type="text"

@@ -33,8 +33,10 @@ const Group: NextPage = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [isOpen, setIsOpen] = useState(false);
   const [isJoining, setIsJoining] = useState(false)
+  const [update, setUpdate] = useState(false);
 
   useEffect(() => {
+    console.log("...")
     if (session && session.user?.id) {
       const fetchData = async () => {
         const userData = await getUserInfobyAuthId(session.user.id);
@@ -48,7 +50,7 @@ const Group: NextPage = () => {
     if (!session){
         setLoading(false);
     }
-  }, [session, isJoining, groups]);
+  }, [session, isJoining, update]);
 
   useEffect(() => {
     if (!loading && !session) {
@@ -97,23 +99,25 @@ const Group: NextPage = () => {
                 leaveFrom="transform opacity-100 translate-y-0"
                 leaveTo="transform opacity-0 -translate-y-4"
               >
-                <Disclosure.Panel className="w-4/6 mt-2 min-w-[400px] mx-auto border-2 rounded-lg p-4">
+                <Disclosure.Panel className="w-4/6 mt-2 min-w-[400px] mx-auto border-2 rounded-lg p-6">
                   <div className="space-y-6">
                     {/* Create Group Section */}
-                    <CreateGroupButton userId={user.id} groups={groups} />
+                    <CreateGroupButton userId={user.id} groups={groups} setUpdate={setUpdate}/>
                     {/* Join Group Section */}
-                    <JoinGroupButton userId={user.id} />
+                    <JoinGroupButton userId={user.id} setUpdate={setUpdate}/>
                     {
                       groups && groups.length > 0
                         ? groups.map((group, index) => (
                             <div
+                            key={group.group_id}
                               className={` flex flex-col justify-between space-y-4 ${
-                                index === groups.length - 1 ? '' : 'border-b border-gray-300 pb-6'
+                                index === groups.length - 1 ? 'pb-2' : 'border-b border-gray-300 pb-6'
                               }`}
                             >
-                              <div className="flex justify-between items-center">
-                                <h1 className="text-2xl font-black text-white">{group.group_name}</h1>
-                                <div className="flex items-center space-x-2">
+                              <div className="flex flex-row">
+                                <h1 className="text-2xl font-black text-white mx-auto">{group.group_name}</h1>
+                              </div>
+                              <div className="flex space-x-2 ml-auto">
                                   <span className="text-lg text-white font-bold">Group ID:</span>
                                   <button
                                     onClick={() => navigator.clipboard.writeText(group.group_id)}
@@ -122,10 +126,9 @@ const Group: NextPage = () => {
                                     <ClipboardCopyIcon className="w-4 h-4" />
                                   </button>
                                 </div>
-                              </div>
                               <p className="text-lg text-gray-400 pb-2">{group.group_description}</p>
                               <div>
-                                <LeaveGroupButton userId={user.id} groupId={group.group_id} />
+                                <LeaveGroupButton userId={user.id} groupId={group.group_id} setUpdate={setUpdate}/>
                               </div>
                             </div>
                           ))
