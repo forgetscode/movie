@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Dialog } from '@headlessui/react';
 import Card from './Card';
 import ReactPlayer from 'react-player';
+import { XIcon } from '@heroicons/react/outline'; 
 
 export interface Movie {
   title: string;
@@ -77,9 +78,14 @@ export function MovieModal({ movie, onClose }: Props) {
       onClose={handleClose}
       className="fixed inset-0 z-50 overflow-y-auto"
     >
-      <div className="flex items-center justify-center min-h-screen max-w-[800px] mx-auto">
+      <div className="flex items-center justify-center max-h-5/6 max-w-5/6 sm:min-h-screen sm:max-w-[800px] mx-auto">
         <Dialog.Overlay className="fixed inset-0 bg-black opacity-60" />
         <div className="relative bg-zinc-900 rounded-lg w-full h-full flex flex-col justify-center items-center shadow-md shadow-zinc-900">
+          <div className="absolute top-4 right-4 md:hidden">
+            <button onClick={handleClose} className="p-1 rounded-full bg-gray-300 hover:bg-gray-400">
+              <XIcon className="w-6 h-6 text-gray-800" />
+            </button>
+          </div>
           <div className="bg-zinc-900 w-full h-[400px] flex justify-center items-center rounded-t-lg pt-3 px-3">
             {isLoading ? (
               <div className="w-10 h-10 border-4 border-gray-300 rounded-full animate-spin"></div>

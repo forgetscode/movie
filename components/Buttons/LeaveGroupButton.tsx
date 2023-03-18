@@ -26,7 +26,7 @@ const LeaveGroupButton: React.FC<Props> = ({ userId, groupId, setUpdate }) => {
 
   return (
     <button
-      className="w-60 px-4 py-2 text-white font-bold bg-transparent border rounded-md hover:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
+      className="sm:w-60 px-4 py-2 text-white font-bold bg-transparent border rounded-md hover:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
       type="button"
       onClick={handleLeave}
       disabled={isLeaving}

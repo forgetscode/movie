@@ -63,7 +63,7 @@ function NavBar({ children }: NavBarProps) {
   
   return (
     <div className="flex flex-col space-y-24">
-      <div className={`${isScrolled && 'bg-black'} mb-8 h-16 w-full fixed p-2 px-8 z-50 flex items-center`}>
+      <div className={`${isScrolled && 'bg-black bg-opacity-50'} mb-8 h-16 w-full fixed p-2 px-8 z-50 flex items-center`}>
         <ul className="flex flex-row text-white space-x-2 text-2xl w-full justify-between">
         <ul className="flex flex-row space-x-6">
         <Link href="/">

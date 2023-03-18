@@ -47,7 +47,7 @@ interface Props {
             inList
                 ? "border-white text-white focus:ring-white hover:border-white hover:text-white"
                 : "border-blue-500 text-blue-500 focus:ring-blue-500 hover:border-blue-600 hover:text-blue-600"
-            } px-6 py-3 border rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-opacity-50`}
+            } p-2 sm:px-6 sm:py-3 border rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-opacity-50`}
             onClick={inList ? handleRemoveFromList : handleAddToList}
         >
             {addButtonLabel}

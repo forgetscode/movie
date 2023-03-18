@@ -83,7 +83,7 @@ const Group: NextPage = () => {
       <Disclosure>
           {({ open }) => (
             <>
-              <Disclosure.Button className="flex items-center justify-between border-2 w-4/6 min-w-[400px] mx-auto p-4 text-white font-black text-3xl rounded-2xl focus:outline-none group">
+              <Disclosure.Button className="flex items-center justify-between border-2 w-4/6 sm:min-w-[400px] mx-auto p-4 text-white font-black text-3xl rounded-2xl focus:outline-none group">
                 <div className="flex items-center">
                   <UsersIcon className="w-10 h-10 mr-4" />
                   Group Settings
@@ -99,7 +99,7 @@ const Group: NextPage = () => {
                 leaveFrom="transform opacity-100 translate-y-0"
                 leaveTo="transform opacity-0 -translate-y-4"
               >
-                <Disclosure.Panel className="w-4/6 mt-2 min-w-[400px] mx-auto border-2 rounded-lg p-6">
+                <Disclosure.Panel className="w-4/6 mt-2 sm:min-w-[400px] mx-auto border-2 rounded-lg p-6">
                   <div className="space-y-6">
                     {/* Create Group Section */}
                     <CreateGroupButton userId={user.id} groups={groups} setUpdate={setUpdate}/>
