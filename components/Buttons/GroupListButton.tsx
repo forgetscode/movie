@@ -51,7 +51,7 @@ export function GroupListButton({ up=false }) {
         className="bg-blue-700 hover:bg-blue-800 text-white font-bold sm:py-2 sm:px-4 p-2 rounded"
         onClick={handleAddToGroupList}
       >
-        <PlusIcon className="sm:w-5 sm:h-5 h-3 w-3 "/>
+        <PlusIcon className="w-5 h-5 "/>
       </button>
     </div>
   )
