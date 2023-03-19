@@ -36,7 +36,7 @@ function Card({movie, clickable = true, modal = false}: Props) {
     setExpanded(!expanded);
   };
 
-  const overviewText = movie.overview.length > 500 ? (expanded ? movie.overview : `${movie.overview.slice(0, 500)}...`) : movie.overview;
+  const overviewText = movie.overview.length > 300 ? (expanded ? movie.overview : `${movie.overview.slice(0, 300)}...`) : movie.overview;
 
   return (
     <div className="max-w-[800px] flex flex-col p-4 rounded-lg bg-zinc-900 shadow-lg shadow-gray-900">
@@ -51,7 +51,7 @@ function Card({movie, clickable = true, modal = false}: Props) {
       <div className="w-full mx-auto">
         <p className="text-gray-500 text-base py-5">
           {overviewText}
-          {movie.overview.length > 500 && (
+          {movie.overview.length > 300 && (
             <button onClick={toggleExpansion} className="text-blue-500 hover:underline">
               {expanded ? "less" : "more"}
             </button>
