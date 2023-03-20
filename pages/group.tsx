@@ -113,10 +113,10 @@ const Group: NextPage = () => {
       <Disclosure>
           {({ open }) => (
             <>
-              <Disclosure.Button className="flex items-center justify-between border-2 w-4/6 min-w-[400px] mx-auto p-4 text-white font-black text-3xl rounded-2xl focus:outline-none group">
+              <Disclosure.Button className="flex items-center justify-between border-2 w-4/6 sm:min-w-[400px] mx-auto p-4 text-white font-black text-3xl rounded-2xl focus:outline-none group">
                 <div className="flex items-center">
                   <UsersIcon className="w-10 h-10 mr-4" />
-                  Group Controls
+                  <p className='hidden sm:block'>Group Controls</p>
                 </div>
                 <CogIcon className="w-8 h-8 group-hover:animate-spin" />
               </Disclosure.Button>
@@ -169,10 +169,10 @@ const Group: NextPage = () => {
           )}
         </Disclosure>
       </main>
-      <div>
+      <div className='mx-auto w-full'>
         {groupMoviesData.map(({ group_id, movies }) => (
           <div key={group_id} className="pb-16">
-            <p className="text-5xl font-black text-center pb-16">{groupMovieLists ? findGroupNameById(group_id, groupMovieLists!, groups):<></>}</p>
+            <p className="text-3xl font-black text-center pb-16">{groupMovieLists ? findGroupNameById(group_id, groupMovieLists!, groups):<></>}</p>
             <div
               className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 w-full px-4"
               style={{
