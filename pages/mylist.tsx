@@ -71,9 +71,9 @@ const MyList: NextPage = () => {
       </Head>
       <main className="flex w-full flex-1 flex-col items-center justify-center px-20">
         <div className="flex flex-col items-center justify-between w-full pb-8">
-          <p className="text-5xl font-black text-center pb-16">Your List</p>
+          <p className="text-3xl font-black text-center pb-16">Your List</p>
           <div className='flex flex-row space-x-3'>
-            <p className='font-black text-2xl'>Sort by:</p>
+            <p className='font-black text-xl'>Sort by:</p>
             <select
             className="border bg-white text-black border-gray-300 p-2 rounded-md"
             value={sortBy}
@@ -93,7 +93,7 @@ const MyList: NextPage = () => {
           }}
         >
           {sortedMovies && sortedMovies?.length === 0 ? (
-            <p className="text-3xl font-black text-center">There are no movies in your list.</p>
+            <p className="text-2xl font-black text-center">There are no movies in your list.</p>
           ) : (
             sortedMovies?.map((movie: Movie) => (
               <div className="pb-8" key={movie.id}>

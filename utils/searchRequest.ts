@@ -23,16 +23,17 @@ export interface Movie {
 export const getMovieInfo = async (movies: string[]): Promise<Movie[]> => {
   const promises = movies.map(async (movie) => {
     const movieName = movie.split('(')[0].trim().replace(/ /g, '-').toLowerCase();
-    console.log(movieName)
     const url = `${BASE_URL}/search/movie?api_key=${API_KEY}&query=${movieName}`;
 
     const response = await fetch(url);
+
     const data = await response.json();
 
     if (data.results.length > 0) {
       return data.results[0];
     }
 
+    console.log("there was a problem with... ", movie)
     return null;
   });
 

@@ -29,7 +29,6 @@ export function MoviesProvider({ children }: MoviesProviderProps) {
     const fetchMovies = useCallback(async () => {
     if (user) {
         try {
-            console.log("fetching...")
             createNewUserMovieList(user.id);
             const { data, error } = await supabase
                 .from('user_movie_list')

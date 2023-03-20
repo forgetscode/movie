@@ -72,8 +72,11 @@ const Home = ({
       const content = data.result.choices[0].message.content;
       setMessage(content)
       const movies = parseCompletion(content);
+      console.log("parse", movies)
       const movieTitles = movies.map((movie) => movie.split('(')[0].trim());
+      console.log("movie titles", movieTitles)
       const movieData = await getMovieInfo(movieTitles);
+      console.log("get movie info", movieData)
       setSearch(movieData);
       if (movies.length === 1) {
         setCompletion(movies[0]);
@@ -114,12 +117,13 @@ const Home = ({
             />
         </div>
         <div className="flex flex-col items-center justify-center gap-6 p-8">
-          <input className="w-full sm:w-[240px] md:w-[400px] max-w-md px-4 py-3 bg-gray-100 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent !text-black" type="text" value={value} onChange={handleInput} onKeyPress={handleKeyPress} />
+          <input className="sm:w-[240px] md:w-[400px] max-w-md px-4 py-3 bg-gray-100 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent !text-black" type="text" value={value} onChange={handleInput} onKeyPress={handleKeyPress} />
           <button className="px-6 py-3 bg-blue-700 text-white rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50" onClick={handleButtonClick}>Submit</button>
           <ul className="list-disc pl-4 pt-16">
-            {search && search.length > 0 && search.every(Boolean) ? (
-              search.map((movie) => (
-                <div key={movie.id} className='pb-8'>
+            {search && search.length > 0 ? (
+              search.map((movie, index) => (
+                movie && 
+                <div key={index} className='pb-8'>
                   <Card movie={movie} />
                 </div>
               ))

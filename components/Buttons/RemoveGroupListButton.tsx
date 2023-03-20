@@ -29,16 +29,11 @@ export function RemoveGroupListButton({ up = false, movie, groupMovieListId, set
   };
 
   return (
-    <div className='-mt-6'>
-        <p className='font-bold pb-1'>
-            Remove
-        </p>
       <button
-        className="bg-black hover:bg-opacity-50 text-white font-bold px-4 py-2 sm:px-5 sm:py-2 md:px-6 md:py-3 rounded-lg"
+        className="px-4 py-2 sm:px-5 sm:py-2 md:px-6 md:py-3 text-sm sm:text-base bg-black text-white rounded-lg hover:bg-opacity-50 shadow-md hover:ring-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-opacity-50"
         onClick={RemoveGroupListButton}
       >
-        <MinusIcon className="w-5 h-5" />
+        Remove
       </button>
-    </div>
   );
 }

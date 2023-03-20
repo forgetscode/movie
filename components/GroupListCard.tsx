@@ -27,12 +27,12 @@ function GroupListCard({movie, groupMovieListId, clickable = true, modal = false
           <p className="text-white text-lg font-black">{movie.release_date ?  movie.release_date?.slice(0, 4) : movie.first_air_date.slice(0, 4)}</p>
         </div>
         <hr className="border-b border-gray-600 px-4"/>
-        <div className="flex flex-row px-4 pb-4 space-y-4 space-x-4 pt-5 justify-between">
+        <div className="flex flex-row px-4 pb-4 pt-5 justify-between">
             <div className="flex space-x-4">
                 <WatchButton movieTitle={movie.title ? movie.title : movie.name}/>
                 <AlterListButton movie={movie} />
             </div>
-            <div>
+            <div className="flex">
                 <RemoveGroupListButton up={modal} movie={movie} groupMovieListId={groupMovieListId} setUpdate={setUpdate}/>
             </div>
         </div>

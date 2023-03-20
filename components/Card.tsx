@@ -26,7 +26,7 @@ function Card({movie, clickable = true, modal = false}: Props) {
         <div className={`${clickable ? 'cursor-pointer' : ''}`} style={{ pointerEvents: clickable ? 'auto' : 'none' }}>
           <Thumbnail movie={movie} />
         </div>
-        <h1 className="text-3xl font-black mb-2 text-white text-center w-full h-full px-2">
+        <h1 className="text-2xl font-black mb-2 text-white text-center w-full h-full px-2">
           {movie.title ? movie.title : movie.name}
         </h1>
       </div>
