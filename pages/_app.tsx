@@ -7,6 +7,7 @@ import { useState } from 'react'
 import { UserProvider } from '../context/useUser';
 import { GroupsProvider } from '../context/useGroups'
 import { MoviesProvider } from '../context/useMovies'
+import { Toaster } from 'react-hot-toast'
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [supabaseClient] = useState(() => createBrowserSupabaseClient())
@@ -19,6 +20,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <GroupsProvider>
           <MoviesProvider>
             <NavBar>
+              <Toaster/>
               <Component {...pageProps} />
             </NavBar>
           </MoviesProvider>

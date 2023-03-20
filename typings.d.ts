@@ -66,6 +66,11 @@ interface UserMovieList {
     user_id: string;
 }
 
+interface GroupMovieList {
+    id: number;
+    group_id: string;
+  }
+
 interface Video {
     key: string;
     type: string;
@@ -89,4 +94,6 @@ type GroupsContextType = {
     groups: Group[] | null;
     loadingGroups: boolean;
     updateGroups: () => void;
+    groupMovieLists: GroupMovieList[] | null;
   };
+  

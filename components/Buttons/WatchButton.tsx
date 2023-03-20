@@ -13,7 +13,7 @@ export const WatchButton: React.FC<Props> = ({ movieTitle }) => {
 
   return (
     <button
-      className="p-2 sm:px-6 sm:py-3 bg-blue-700 text-white rounded-lg shadow-md hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+      className="px-4 py-2 sm:px-5 sm:py-2 md:px-6 md:py-3 bg-blue-700 text-white rounded-lg shadow-md hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
       onClick={handleClick}
     >
       Watch

@@ -7,7 +7,7 @@ async function createUserMovieMapping(movieId: number, userMovieListId: number):
     console.error("Error creating user movie mapping:", error.message);
     return false;
   } else {
-    console.log("User movie mapping created successfully");
+    //console.log("User movie mapping created successfully");
   }
 }
 

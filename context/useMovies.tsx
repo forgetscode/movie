@@ -29,17 +29,18 @@ export function MoviesProvider({ children }: MoviesProviderProps) {
     const fetchMovies = useCallback(async () => {
     if (user) {
         try {
-        createNewUserMovieList(user.id);
-        const { data, error } = await supabase
-            .from('user_movie_list')
-            .select('*')
-            .eq('user_id', user.id)
-            .limit(1);
-            if (data && data.length > 0) {
-            setUserMovieList({ id: data[0].id, user_id: data[0].user_id });
-            const movies = await getMoviesByListId(data[0].id);
-            setMovies(movies);
-            }
+            console.log("fetching...")
+            createNewUserMovieList(user.id);
+            const { data, error } = await supabase
+                .from('user_movie_list')
+                .select('*')
+                .eq('user_id', user.id)
+                .limit(1);
+                if (data && data.length > 0) {
+                setUserMovieList({ id: data[0].id, user_id: data[0].user_id });
+                const movies = await getMoviesByListId(data[0].id);
+                setMovies(movies);
+                }
         } catch (error) {
         console.error('Error fetching user movie data:', error);
         }
@@ -48,11 +49,11 @@ export function MoviesProvider({ children }: MoviesProviderProps) {
     }, [user]);
 
     useEffect(() => {
-    fetchMovies();
+        fetchMovies();
     }, [user, update, fetchMovies]);
 
     const updateMovies = () => {
-    setUpdate(prevState => !prevState);
+        setUpdate(prevState => !prevState);
     };
 
     return (

@@ -41,7 +41,7 @@ function Card({movie, clickable = true, modal = false}: Props) {
         </p>
         <div className="flex flex-row space-x-2 justify-between pb-5">
           <p className="text-blue-500 text-lg font-black">Rating: {movie.vote_average.toFixed(1)}/10</p>
-          <p className="text-white text-lg font-black">{movie.release_date?.slice(0, 4)}</p>
+          <p className="text-white text-lg font-black">{movie.release_date ?  movie.release_date?.slice(0, 4) : movie.first_air_date.slice(0, 4)}</p>
         </div>
         <hr className="border-b border-gray-600"/>
         <div className="flex space-x-4 pt-5 justify-between">
@@ -50,7 +50,7 @@ function Card({movie, clickable = true, modal = false}: Props) {
             <AlterListButton movie={movie} />
           </div>
           <div>
-            <GroupListButton up={modal}/>
+            <GroupListButton up={modal} movie={movie}/>
           </div>
         </div>
       </div>

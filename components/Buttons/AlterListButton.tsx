@@ -33,7 +33,7 @@ interface Props {
           }
           setInList(true);
           updateMovies((update) => !update);
-          notifySuccess("Added to list");
+          notifySuccess("Added to list!");
         }
         catch (error) {
           console.log(error);
@@ -60,7 +60,7 @@ interface Props {
     if (loadingMovies) {
       return( 
         <button className=" border-blue-500 text-blue-500 focus:ring-blue-500 hover:border-blue-600 hover:text-blue-600
-        p-2 sm:px-6 sm:py-3 border rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-opacity-50 text-transparent">
+        px-4 py-2 sm:px-5 sm:py-2 md:px-6 md:py-3 border rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-opacity-50 text-transparent">
           Add to list
         </button>
       );
@@ -73,7 +73,7 @@ interface Props {
               inList
                   ? "border-white text-white focus:ring-white hover:border-white hover:text-white"
                   : "border-blue-500 text-blue-500 focus:ring-blue-500 hover:border-blue-600 hover:text-blue-600"
-              } p-2 sm:px-6 sm:py-3 border rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-opacity-50`}
+              }px-4 py-2 sm:px-5 sm:py-2 md:px-6 md:py-3 border rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-opacity-50`}
               onClick={inList ? handleRemoveFromList : handleAddToList}
           >
               {addButtonLabel}

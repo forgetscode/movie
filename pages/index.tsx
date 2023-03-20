@@ -3,7 +3,6 @@ import { useState, useCallback, ChangeEvent } from 'react'
 import Row from '../components/Row';
 import requests from '../utils/requests';
 import Typed from 'react-typed';
-import { Toaster } from 'react-hot-toast';
 import { Loading } from '../components/Loader';
 import { getMovieInfo } from '../utils/searchRequest';
 import Card from '../components/Card';
@@ -104,7 +103,6 @@ const Home = ({
       </Head>
   
       <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center pt-12 duration-500">
-        <Toaster/>
         <p className="px-6 font-extrabold text-transparent text-4xl md:text-6xl xl:text-8xl bg-clip-text bg-gradient-to-r from-sky-400 via-blue-600 to-purple-600 md:flex pb-16">Movie Night</p>
         <p className='pb-16  text-xl sm:text-3xl font-black'>
           What are you looking for?
@@ -166,7 +164,7 @@ const Home = ({
           <p className='text-sm font-semibold 
           text-[#e5e5e5] transition duration-200 hover:text-white md:text-2xl py-8'>Random Movies</p>
           }
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-7">
             {movies?.map((movie) => (
                 <ThumbnailTitle key={movie.id} movie={movie}/>
             ))}

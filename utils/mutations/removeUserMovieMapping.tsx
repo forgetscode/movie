@@ -6,7 +6,7 @@ async function removeUserMovieMapping(movieId: number, userMovieListId: number):
     console.error("Error removing user movie mapping:", error.message);
     throw new Error("Error removing user movie mapping");
   } else {
-    console.log("User movie mapping removed successfully");
+    //console.log("User movie mapping removed successfully");
   }
 }
 

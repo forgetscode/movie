@@ -2,28 +2,55 @@ import React, { useState, useEffect } from 'react';
 import { Listbox } from '@headlessui/react';
 import { ChevronDownIcon, PlusIcon } from '@heroicons/react/solid';
 import { useGroups } from '../../context/useGroups';
-import { Group } from '../../typings';
+import { Group, Movie } from '../../typings';
+import { addGroupMovieListMapping } from '../../utils/mutations/createGroupMovieMapping';
+import { notifyFailure, notifySuccess } from '../Toast';
+import addMovieToDatabase from '../../utils/mutations/addMovie';
 
 
 type GroupListButtonProps = {
+  movie: Movie;
   up?: boolean;
 };
 
-export function GroupListButton({ up = false }: GroupListButtonProps) {
-  const { groups } = useGroups();
+export function GroupListButton({ up = false, movie}: GroupListButtonProps) {
+  const { groups, groupMovieLists } = useGroups();
   const [selectedGroup, setSelectedGroup] = useState<Group | null>(null);
 
   useEffect(() => {
     if (groups) {
+
       setSelectedGroup(groups[0]);
     }
   }, [groups]);
 
   const handleAddToGroupList = async () => {
-    // Replace with your notification success function
-    // notifySuccess('Added to group list');
-    // Replace with your Supabase RPC request function
-    // await submitSupabaseRPCRequest();
+    await addMovieToDatabase(movie);
+    if (!selectedGroup) {
+      return;
+    }
+  
+    const targetGroupMovieList = groupMovieLists?.find(
+      (gml) => gml.group_id === selectedGroup.group_id
+    );
+  
+    if (!targetGroupMovieList) {
+      console.error("No matching groupMovieLists item found.");
+      return;
+    }
+  
+    try{
+      const result = await addGroupMovieListMapping(movie.id, targetGroupMovieList.id);
+      if (result){
+        notifySuccess('Added to group list!')
+      }
+      else{
+        notifyFailure('Already in group list.')
+      }
+    }
+    catch{
+      notifyFailure('Server not reachable.')
+    }
   };
 
   return (

@@ -1,7 +1,8 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { useUser } from './useUser';
 import getGroupByUserId from '../utils/queries/getGroupByUserId';
-import { Group, GroupsContextType } from '../typings';
+import { Group, GroupsContextType, GroupMovieList } from '../typings';
+import { supabase } from '../utils/supabase';
 
 const GroupsContext = createContext<GroupsContextType | undefined>(undefined);
 
@@ -19,6 +20,7 @@ type GroupsProviderProps = {
 
 export function GroupsProvider({ children }: GroupsProviderProps) {
   const [update, setUpdate] = useState(false);
+  const [groupMovieLists, setGroupMovieLists] = useState<GroupMovieList[] | null>(null);
   const [loadingGroups, setLoadingGroups] = useState<boolean>(true);
   const { user } = useUser();
   const [groups, setGroups] = useState<Group[] | null>(null);
@@ -28,6 +30,31 @@ export function GroupsProvider({ children }: GroupsProviderProps) {
       try {
         const userGroups = await getGroupByUserId(user.id);
         setGroups(userGroups);
+
+        const fetchGroupMovieListIds = async (group_id: string) => {
+            const { data, error } = await supabase
+            .from('group_movie_lists')
+            .select('id')
+            .eq('group_id', group_id);
+            
+            if (error) {
+                console.error('Error fetching group movie list ids:', error);
+                return [];
+            }
+            
+            return data.map((entry) => ({ id: entry.id, group_id }));
+        };
+
+        if (userGroups) {
+            const groupMovieListIdsPromises = userGroups.map((group) =>
+              fetchGroupMovieListIds(group.group_id),
+            );
+          
+            const groupMovieListIdsArray = await Promise.all(groupMovieListIdsPromises);
+            const groupMovieLists = groupMovieListIdsArray.flat();
+            setGroupMovieLists(groupMovieLists);
+          }
+
         setLoadingGroups(false);
       } catch (error) {
         console.error('Error fetching user data type group:', error);
@@ -46,7 +73,7 @@ export function GroupsProvider({ children }: GroupsProviderProps) {
   };
 
   return (
-    <GroupsContext.Provider value={{ groups, loadingGroups, updateGroups }}>
+    <GroupsContext.Provider value={{ groups, loadingGroups, updateGroups, groupMovieLists }}>
       {children}
     </GroupsContext.Provider>
   );

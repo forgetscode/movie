@@ -1,24 +1,5 @@
 import { supabase } from "../supabase";
-
-export interface Movie {
-    id: number;
-    title: string;
-    backdrop_path: string;
-    media_type?: string;
-    release_date?: string;
-    first_air_date: string;
-    genre_ids: string;
-    name: string;
-    origin_country: string;
-    original_language: string;
-    original_name: string;
-    overview: string;
-    popularity: number;
-    poster_path: string;
-    vote_average: number;
-    vote_count: number;
-  }
-  
+import { Movie } from '../../typings';
 
 export async function getMoviesByListId(movieListId: number): Promise<Movie[] | null> {
     try {
