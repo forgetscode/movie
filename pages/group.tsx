@@ -116,7 +116,7 @@ const Group: NextPage = () => {
               <Disclosure.Button className="flex items-center justify-between border-2 w-4/6 min-w-[400px] mx-auto p-4 text-white font-black text-3xl rounded-2xl focus:outline-none group">
                 <div className="flex items-center">
                   <UsersIcon className="w-10 h-10 mr-4" />
-                  Group Settings
+                  Group Controls
                 </div>
                 <CogIcon className="w-8 h-8 group-hover:animate-spin" />
               </Disclosure.Button>

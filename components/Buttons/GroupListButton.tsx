@@ -57,10 +57,10 @@ export function GroupListButton({ up = false, movie}: GroupListButtonProps) {
     <div className="flex flex-row space-x-4">
       <Listbox value={selectedGroup} onChange={setSelectedGroup}>
         <div className="relative">
-          <div className="flex flex-col w-40">
-            <p className="text-white">Add to Group:</p>
-            <Listbox.Button className="text-white underline flex flex-row items-center">
-              {selectedGroup?.group_name || 'Select a group'}
+          <div className="flex flex-col max-w-40">
+            <p className="text-white flex">Add to Group:</p>
+            <Listbox.Button className="text-white underline flex flex-row items-center max-w-40">
+              <p className='text-clip overflow-hidden ...'>{selectedGroup?.group_name || 'Select a group'}</p>
               <ChevronDownIcon className="w-5 h-5 ml-1" />
             </Listbox.Button>
           </div>
@@ -85,11 +85,11 @@ export function GroupListButton({ up = false, movie}: GroupListButtonProps) {
         </div>
       </Listbox>
       <button
-        className="bg-blue-700 hover:bg-blue-800 text-white font-bold sm:py-2 sm:px-4 p-2 rounded"
+        className="bg-blue-700 hover:bg-blue-800 text-white font-bold sm:py-2 sm:px-4 p-2 rounded cursor-pointer"
         onClick={handleAddToGroupList}
         disabled={!selectedGroup}
       >
-        <PlusIcon className="w-5 h-5" />
+        <PlusIcon className="w-5 h-5 cursor-pointer" />
       </button>
     </div>
   );

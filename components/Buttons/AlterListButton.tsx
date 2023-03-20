@@ -71,7 +71,7 @@ interface Props {
           <button
               className={`${
               inList
-                  ? "border-white text-white focus:ring-white hover:border-white hover:text-white"
+                  ? "border-white text-white focus:ring-white hover:border-gray-400 hover:text-gray-400"
                   : "border-blue-500 text-blue-500 focus:ring-blue-500 hover:border-blue-600 hover:text-blue-600"
               }px-4 py-2 sm:px-5 sm:py-2 md:px-6 md:py-3 border rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-opacity-50`}
               onClick={inList ? handleRemoveFromList : handleAddToList}

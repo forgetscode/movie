@@ -34,7 +34,7 @@ export function RemoveGroupListButton({ up = false, movie, groupMovieListId, set
             Remove
         </p>
       <button
-        className="bg-black hover:bg-blue-800 text-white font-bold px-4 py-2 sm:px-5 sm:py-2 md:px-6 md:py-3 rounded-lg"
+        className="bg-black hover:bg-opacity-50 text-white font-bold px-4 py-2 sm:px-5 sm:py-2 md:px-6 md:py-3 rounded-lg"
         onClick={RemoveGroupListButton}
       >
         <MinusIcon className="w-5 h-5" />

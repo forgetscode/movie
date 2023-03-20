@@ -35,6 +35,7 @@ const CreateGroupButton: React.FC<Props> = ({ userId, setUpdate  }) => {
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Name"
+          maxLength={40}
           className="bg-transparent w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 text-white"
         />
         <input
