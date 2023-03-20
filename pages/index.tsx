@@ -9,62 +9,8 @@ import { getMovieInfo } from '../utils/searchRequest';
 import Card from '../components/Card';
 import { MovieDBAPI } from '../utils/showMore';
 import ThumbnailTitle from '../components/ThumbnailTitle';
+import { Movie, MovieRecommendation } from '../typings';
 
-type MovieRecommendation = {
-  result: {
-    id: string;
-    object: string;
-    created: number;
-    model: string;
-    choices: {
-      message: {
-        role: string;
-        content: string;
-      };
-      finish_reason: string;
-      index: number;
-    }[];
-    usage: {
-      prompt_tokens: number;
-      completion_tokens: number;
-      total_tokens: number;
-    };
-  };
-};
-
-export interface Genre {
-  id: number
-  name: string
-}
-
-export interface Movie {
-  title: string
-  backdrop_path: string
-  media_type?: string
-  release_date?: string
-  first_air_date: string
-  genre_ids: number[]
-  id: number
-  name: string
-  origin_country: string[]
-  original_language: string
-  original_name: string
-  overview: string
-  popularity: number
-  poster_path: string
-  vote_average: number
-  vote_count: number
-}
-
-export interface Element {
-type:
-  | 'Bloopers'
-  | 'Featurette'
-  | 'Behind the Scenes'
-  | 'Clip'
-  | 'Trailer'
-  | 'Teaser'
-}
 
 interface Props {
   trendingNow: Movie[]
@@ -77,6 +23,16 @@ interface Props {
 }
 
 const api = new MovieDBAPI();
+
+function parseCompletion(completion: string): string[] {
+  const regex = /\d+\. (.+)/g;
+  const matches = completion.matchAll(regex);
+  const results: string[] = [];
+  for (const match of matches) {
+    results.push(match[1]);
+  }
+  return results;
+}
 
 const Home = ({    
   actionMovies,
@@ -94,16 +50,6 @@ const Home = ({
   const [showHeader, setShowHeader] = useState(false);
   const [message, setMessage] = useState<string>('');
 
-  function parseCompletion(completion: string): string[] {
-    const regex = /\d+\. (.+)/g;
-    const matches = completion.matchAll(regex);
-    const results: string[] = [];
-    for (const match of matches) {
-      results.push(match[1]);
-    }
-    return results;
-  }
-  
   const handleInput = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       setValue(e.target.value);
@@ -142,13 +88,13 @@ const Home = ({
       if (e.key === 'Enter') {
         handleButtonClick();
       }
-    }, [handleButtonClick]);
+  }, [handleButtonClick]);
 
-    const fetchMovies = async () => {
-      const newMovies = await api.get20RandomMovies();
-      setMovies((prevMovies) => [...prevMovies, ...newMovies]);
-      setShowHeader(true);
-    };
+  const fetchMovies = async () => {
+    const newMovies = await api.get20RandomMovies();
+    setMovies((prevMovies) => [...prevMovies, ...newMovies]);
+    setShowHeader(true);
+  };
 
   return (
     <div className="relative h-screen flex-col items-center justify-center py-2">

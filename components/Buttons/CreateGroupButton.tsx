@@ -1,12 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { Group } from '../../typings';
 import createGroupByUser from '../../utils/mutations/createGroupByUser';
 import { notifyFailure, notifySuccess } from '../Toast';
-
-type Group = {
-  group_id: string;
-  group_name: string;
-  group_description: string;
-};
 
 type Props = {
   userId: string;
@@ -20,7 +15,7 @@ const CreateGroupButton: React.FC<Props> = ({ userId, setUpdate  }) => {
 
   const handleCreateGroup = async () => {
     try {
-      const newGroup = await createGroupByUser(name, description, userId);
+      await createGroupByUser(name, description, userId);
       notifySuccess('Group created.');
       setUpdate((update) => !update); 
     } catch (error) {

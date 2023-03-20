@@ -1,10 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from '@supabase/auth-helpers-react';
 import { NextPage } from 'next';
 import { Loading } from '../components/Loader';
-import getUserInfobyAuthId from '../utils/queries/getUserInfoByAuthId';
-import getGroupByUserId from '../utils/queries/getGroupByUserId';
 import Head from 'next/head';
 import JoinGroupButton from '../components/Buttons/JoinGroupButtonForm';
 import LeaveGroupButton from '../components/Buttons/LeaveGroupButton';
@@ -12,53 +10,23 @@ import { Toaster } from 'react-hot-toast';
 import CreateGroupButton from '../components/Buttons/CreateGroupButton';
 import { CogIcon, UsersIcon, ClipboardCopyIcon } from '@heroicons/react/solid';
 import { Disclosure, Transition } from '@headlessui/react';
-
-type User = {
-  id: string;
-  name: string;
-  auth_id: string;
-};
-
-type Group = {
-  group_id: string;
-  group_name: string;
-  group_description: string;
-};
+import { useUser } from '../context/useUser';
+import { useGroups } from '../context/useGroups';
 
 const Group: NextPage = () => {
   const session = useSession();
   const router = useRouter();
-  const [user, setUser] = useState<User | undefined | null>();
-  const [groups, setGroups] = useState<Group[] | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [isOpen, setIsOpen] = useState(false);
-  const [isJoining, setIsJoining] = useState(false)
-  const [update, setUpdate] = useState(false);
-
+  const { groups, loadingGroups, updateGroups } = useGroups();
+  const { user, setUser } = useUser();
+  
   useEffect(() => {
-    console.log("...")
-    if (session && session.user?.id) {
-      const fetchData = async () => {
-        const userData = await getUserInfobyAuthId(session.user.id);
-        setUser(userData);
-        const userGroups = await getGroupByUserId(userData?.id!);
-        setGroups(userGroups);
-        setLoading(false);
-      };
-      fetchData();
-    }
-    if (!session){
-        setLoading(false);
-    }
-  }, [session, isJoining, update]);
-
-  useEffect(() => {
-    if (!loading && !session) {
+    if (!loadingGroups && !session) {
       router.push('/');
     }
-  }, [loading, session, router]);
+  }, [loadingGroups, session, router]);
 
-  if (loading || !groups || !user) {
+  if (loadingGroups || !groups || !user) {
+
     return (
       <div className="relative h-screen flex-col items-center justify-center py-2">
         <Head>
@@ -102,9 +70,9 @@ const Group: NextPage = () => {
                 <Disclosure.Panel className="w-4/6 mt-2 sm:min-w-[400px] mx-auto border-2 rounded-lg p-6">
                   <div className="space-y-6">
                     {/* Create Group Section */}
-                    <CreateGroupButton userId={user.id} groups={groups} setUpdate={setUpdate}/>
+                    <CreateGroupButton userId={user.id} groups={groups} setUpdate={updateGroups}/>
                     {/* Join Group Section */}
-                    <JoinGroupButton userId={user.id} setUpdate={setUpdate}/>
+                    <JoinGroupButton userId={user.id} setUpdate={updateGroups}/>
                     {
                       groups && groups.length > 0
                         ? groups.map((group, index) => (
@@ -128,7 +96,7 @@ const Group: NextPage = () => {
                                 </div>
                               <p className="text-lg text-gray-400 pb-2">{group.group_description}</p>
                               <div>
-                                <LeaveGroupButton userId={user.id} groupId={group.group_id} setUpdate={setUpdate}/>
+                                <LeaveGroupButton userId={user.id} groupId={group.group_id} setUpdate={updateGroups}/>
                               </div>
                             </div>
                           ))

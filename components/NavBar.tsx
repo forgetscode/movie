@@ -3,41 +3,18 @@ import React, { ReactNode, useEffect, useMemo, useState } from "react";
 import { supabase } from "../utils/supabase";
 import { PopAuth } from "./PopAuth";
 import { HomeIcon, UserIcon, UsersIcon, NewspaperIcon } from "@heroicons/react/solid";
-import getUserInfobyAuthId from "../utils/queries/getUserInfoByAuthId";
-import createNewUser from "../utils/mutations/createUser";
 import Link from "next/link";
+import { useUser } from "../context/useUser";
 
 type NavBarProps = {
   children: ReactNode;
 };
 
-type User = {
-  id: string
-  name: string
-  auth_id: string
-}
-
 function NavBar({ children }: NavBarProps) {
   const session = useSession();
-  const [user, setUser] = useState<User | null>(null)
+  const { user, setUser } = useUser();
   const userName = useMemo(() => user?.name, [user]);
   
-  useEffect(() => {
-    if (session && session.user?.id) {
-      const fetchData = async () => {
-        const userData = await getUserInfobyAuthId(session.user.id);
-        if (userData?.id == '-1') {
-          const newUser = await createNewUser(session.user.id);
-          const userData = await getUserInfobyAuthId(session.user.id);
-          setUser(userData);
-        }
-        else{
-          setUser(userData);
-        }
-      }
-      fetchData()
-    }
-  }, [session])
 
   const [isScrolled, setIsScrolled] = useState(false)
 
