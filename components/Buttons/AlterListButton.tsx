@@ -5,6 +5,7 @@ import { removeUserMovieMapping } from "../../utils/mutations/removeUserMovieMap
 import { notifyFailure, notifySuccess } from "../Toast";
 import { useMovies } from "../../context/useMovies";
 import { Movie } from "../../typings";
+import { useUser } from "../../context/useUser";
 
 
 interface Props {
@@ -13,6 +14,7 @@ interface Props {
 
   export const AlterListButton: React.FC<Props> = ({ movie }) => {
     const [inList, setInList] = useState(false);
+    const { user } = useUser()
     const {userMovieList, movies, loadingMovies, updateMovies} = useMovies();
 
     useEffect(() => {
@@ -24,6 +26,9 @@ interface Props {
     }, []);
 
     const handleAddToList = async () => {
+      if(!user){
+        notifyFailure("Must be signed in.");
+      }
       if (userMovieList) {
         try{
           addMovieToDatabase(movie);

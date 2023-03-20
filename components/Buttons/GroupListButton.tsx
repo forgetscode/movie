@@ -6,6 +6,7 @@ import { Group, Movie } from '../../typings';
 import { addGroupMovieListMapping } from '../../utils/mutations/createGroupMovieMapping';
 import { notifyFailure, notifySuccess } from '../Toast';
 import addMovieToDatabase from '../../utils/mutations/addMovie';
+import { useUser } from '../../context/useUser';
 
 
 type GroupListButtonProps = {
@@ -15,6 +16,7 @@ type GroupListButtonProps = {
 
 export function GroupListButton({ up = false, movie}: GroupListButtonProps) {
   const { groups, groupMovieLists } = useGroups();
+  const { user } = useUser()
   const [selectedGroup, setSelectedGroup] = useState<Group | null>(null);
 
   useEffect(() => {
@@ -25,8 +27,14 @@ export function GroupListButton({ up = false, movie}: GroupListButtonProps) {
   }, [groups]);
 
   const handleAddToGroupList = async () => {
+    if(!user){
+      notifyFailure("Must be signed in.");
+      return;
+    }
     await addMovieToDatabase(movie);
+
     if (!selectedGroup) {
+      notifyFailure("No group selected.");
       return;
     }
   
