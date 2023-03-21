@@ -14,6 +14,7 @@ import { Movie, MovieRecommendation } from '../typings';
 interface Props {
   trendingNow: Movie[]
   topRated: Movie[]
+  anime: Movie[]
   actionMovies: Movie[]
   comedyMovies: Movie[]
   horrorMovies: Movie[]
@@ -36,6 +37,7 @@ function parseCompletion(completion: string): string[] {
 const Home = ({    
   actionMovies,
   comedyMovies,
+  anime,
   documentaries,
   horrorMovies,
   romanceMovies,
@@ -146,6 +148,7 @@ const Home = ({
         <section className='md:space-y-16'>
           <Row title="Trending Now" movies={trendingNow} />
           <Row title="Top Rated" movies={topRated} />
+          <Row title="Animation" movies={anime} />
           <Row title="Action Thrillers" movies={actionMovies} />
           <Row title="Comedies" movies={comedyMovies} />
           <Row title="Scary Movies" movies={horrorMovies} />
@@ -190,6 +193,7 @@ export const getServerSideProps = async () => {
   const [
     trendingNow,
     topRated,
+    anime,
     actionMovies,
     comedyMovies,
     horrorMovies,
@@ -198,6 +202,7 @@ export const getServerSideProps = async () => {
   ] = await Promise.all([
     fetch(requests.fetchTrending).then((res) => res.json()),
     fetch(requests.fetchTopRated).then((res) => res.json()),
+    fetch(requests.fetchAnime).then((res) => res.json()),
     fetch(requests.fetchActionMovies).then((res) => res.json()),
     fetch(requests.fetchComedyMovies).then((res) => res.json()),
     fetch(requests.fetchHorrorMovies).then((res) => res.json()),
@@ -209,6 +214,7 @@ export const getServerSideProps = async () => {
     props: {
       trendingNow: trendingNow.results,
       topRated: topRated.results,
+      anime: anime.results,
       actionMovies: actionMovies.results,
       comedyMovies: comedyMovies.results,
       horrorMovies: horrorMovies.results,

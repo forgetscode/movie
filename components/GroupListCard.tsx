@@ -24,7 +24,7 @@ function GroupListCard({movie, groupMovieListId, clickable = true, modal = false
       <div className="w-full mx-auto">
         <div className="flex flex-row space-x-2 justify-between py-5 px-4">
           <p className="text-blue-500 text-lg font-black">Rating: {movie.vote_average.toFixed(1)}/10</p>
-          <p className="text-white text-lg font-black">{movie.release_date ?  movie.release_date?.slice(0, 4) : movie.first_air_date.slice(0, 4)}</p>
+          <p className="text-white text-lg font-black">{movie.release_date ?  movie.release_date?.slice(0, 4) :  movie.first_air_date ? movie.first_air_date.slice(0, 4) : ""}</p>
         </div>
         <hr className="border-b border-gray-600 px-4"/>
         <div className="flex flex-row px-4 pb-4 pt-5 justify-between">
