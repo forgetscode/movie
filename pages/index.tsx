@@ -74,11 +74,9 @@ const Home = ({
       const content = data.result.choices[0].message.content;
       setMessage(content)
       const movies = parseCompletion(content);
-      console.log("parse", movies)
       const movieTitles = movies.map((movie) => movie.split('(')[0].trim());
       console.log("movie titles", movieTitles)
       const movieData = await getMovieInfo(movieTitles);
-      console.log("get movie info", movieData)
       setSearch(movieData);
       if (movies.length === 1) {
         setCompletion(movies[0]);
