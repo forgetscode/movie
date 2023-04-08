@@ -38,6 +38,14 @@ function NavBar({ children }: NavBarProps) {
         window.removeEventListener("scroll", handleScroll)
     }
   }, [])
+
+  function handleRestrictedAccess(path:string) {
+    if (!session) {
+      notifyFailure("Please sign in to access this page");
+    } else {
+      window.location.href = path;
+    }
+  }
   
   return (
     <div className="flex flex-col space-y-24">
@@ -50,20 +58,15 @@ function NavBar({ children }: NavBarProps) {
             <p className="navText group-hover:text-gray-400">Home</p>
           </div>
         </Link>
-        <Link href="/mylist">
-        <div className="flex flex-row space-x-1 group">
+        <div className="flex flex-row space-x-1 group" onClick={() => handleRestrictedAccess("/mylist")}>
           <NewspaperIcon className="h-8 w-8 group-hover:text-gray-400"/>
           <p className="navText group-hover:text-gray-400">My List</p>
         </div>
-        </Link>
-        {!session && notifyFailure("Must be logged in")}
-        <Link href="/group">
-          <div className="flex flex-row space-x-1 group">
-            <UsersIcon className="h-8 w-8 group-hover:text-gray-400"/>
-            <p className="navText group-hover:text-gray-400">My Group</p>
-          </div>
-        </Link>
-        {!session && notifyFailure("Must be logged in")}
+
+        <div className="flex flex-row space-x-1 group" onClick={() => handleRestrictedAccess("/group")}>
+          <UsersIcon className="h-8 w-8 group-hover:text-gray-400"/>
+          <p className="navText group-hover:text-gray-400">My Group</p>
+        </div>
         </ul>
           {session ? (
               <div className="flex flex-row space-x-1 group">

@@ -15,16 +15,23 @@ const MyList: NextPage = () => {
   const router = useRouter();
   const { movies, loadingMovies } = useMovies();
   const { user, loading } = useUser();
+  const [hasRedirected, setHasRedirected] = useState(false);
   const [sortedMovies, setSortedMovies] = useState<Movie[] | null>(null);
   const [sortBy, setSortBy] = useState('first_air_date');
 
   useEffect(() => {
     if (!loading && !session) {
       router.push('/').then(() => {
+        setHasRedirected(true);
       });
     }
   }, [loading, session, router]);
 
+  useEffect(() => {
+    if (hasRedirected) {
+      notifyFailure("Must be signed in.");
+    }
+  }, [hasRedirected]);
 
   useEffect(() => {
     if (movies) {

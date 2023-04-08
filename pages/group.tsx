@@ -49,6 +49,7 @@ const Group: NextPage = () => {
   const router = useRouter();
   const { groups, loadingGroups, updateGroups, groupMovieLists } = useGroups();
   const { user, loading, setUser } = useUser();
+  const [ hasRedirected, setHasRedirected ] = useState(false);
   const [groupMoviesData, setGroupMoviesData] = useState<GroupMoviesData[]>([]);
   const [update, setUpdate] = useState(false);
 
@@ -71,6 +72,7 @@ const Group: NextPage = () => {
   useEffect(() => {
     if (!session && !loading) {
       router.push('/').then(() => {
+        setHasRedirected(true);
       });
     }
   }, [session, router]);
