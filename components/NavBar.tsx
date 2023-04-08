@@ -5,6 +5,7 @@ import { PopAuth } from "./PopAuth";
 import { HomeIcon, UserIcon, UsersIcon, NewspaperIcon } from "@heroicons/react/solid";
 import Link from "next/link";
 import { useUser } from "../context/useUser";
+import { notifyFailure } from '../components/Toast';
 
 type NavBarProps = {
   children: ReactNode;
@@ -55,12 +56,14 @@ function NavBar({ children }: NavBarProps) {
           <p className="navText group-hover:text-gray-400">My List</p>
         </div>
         </Link>
+        {!session && notifyFailure("Must be logged in")}
         <Link href="/group">
           <div className="flex flex-row space-x-1 group">
             <UsersIcon className="h-8 w-8 group-hover:text-gray-400"/>
             <p className="navText group-hover:text-gray-400">My Group</p>
           </div>
         </Link>
+        {!session && notifyFailure("Must be logged in")}
         </ul>
           {session ? (
               <div className="flex flex-row space-x-1 group">
